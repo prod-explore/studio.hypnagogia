@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nowe zgłoszenie – Studio Hypnagogia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #222;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .box {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Nowe zgłoszenie ze strony Studio Hypnagogia</h2>
+
+  <p>Poniżej znajdują się pełne dane przesłane przez użytkownika.</p>
+
+  <div class="box">
+    <p><span class="label">Imię:</span> {{name}}</p>
+    <p><span class="label">Email:</span> {{email}}</p>
+    <p><span class="label">Typ studia:</span> {{studioType}}</p>
+    <p><span class="label">Data:</span> {{date}}</p>
+    <p><span class="label">Godzina rozpoczęcia:</span> {{startHour}}</p>
+    <p><span class="label">Długość sesji:</span> {{sessionLength}} min</p>
+
+    {{#comment}}
+    <p><span class="label">Komentarz:</span> {{comment}}</p>
+    {{/comment}}
+  </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Potwierdzenie zgłoszenia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #222;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .box {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Hej, {{name}} Twoje zgłoszenie zostało odebrane</h2>
+
+  <p>
+    Otrzymaliśmy Twój formularz dotyczący sesji
+    <strong>{{studioType}}</strong> w dniu <strong>{{date}}</strong> o godzinie
+    <strong>{{startHour}}</strong> (czas trwania: <strong>{{sessionLength}} minut</strong>).
+  </p>
+
+  <p>
+    Wkrótce sprawdzimy dostępność terminu i skontaktujemy się z Tobą.  
+    Jeśli będziesz potrzebować kontaktu, pisz śmiało na:
+    <strong>hello@kontakt.studio.hypnagogia.pl</strong>
+  </p>
+
+  {{#comment}}
+  <div class="box">
+    <p class="label">Twój komentarz:</p>
+    <p>{{comment}}</p>
+  </div>
+  {{/comment}}
+
+  <p>Dziękujemy za zgłoszenie.</p>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Twoja licencja na beat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--[if mso]>
+    <style type="text/css">
+    body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
+    </style>
+    <![endif]-->
+</head>
+
+<body style="
+    margin:0;
+    padding:0;
+    background-color:#050505;
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color:#ffffff;
+    -webkit-font-smoothing: antialiased;
+">
+
+    <!-- Wrapper -->
+    <div style="
+        width:100%;
+        background-color:#050505;
+        padding:40px 0;
+    ">
+
+        <!-- Outer Container (bg stars simulation via detailed gradients) -->
+        <!-- Pro tip: reliable star patterns in pure CSS for email are tough. 
+         We use multiple small radial gradients to simulate a starfield. -->
+        <div style="
+        max-width:600px;
+        margin:0 auto;
+        border-radius:12px;
+        overflow:hidden;
+        background-color:#090909;
+        background-image:
+            radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+            radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+            radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px),
+            radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 3px);
+        background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+        background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        border: 1px solid #222;
+    ">
+
+            <!-- Inner Content Padding -->
+            <div style="padding:40px 30px;">
+
+                <!-- Header Logo Text -->
+                <div style="text-align:center; margin-bottom:35px;">
+                    <p style="
+                    margin:0;
+                    font-size:24px;
+                    font-weight:700;
+                    letter-spacing:4px;
+                    color:#ffffff;
+                    text-transform:uppercase;
+                ">HYPNA<span style="color:#888;">GOGIA</span></p>
+                    <p style="
+                    margin:4px 0 0;
+                    font-size:10px;
+                    color:#666;
+                    letter-spacing:1.5px;
+                    text-transform:uppercase;
+                ">Professional Audio Studio</p>
+                </div>
+
+                <!-- Greeting -->
+                <h1 style="
+                margin:0 0 15px;
+                font-size:22px;
+                font-weight:300;
+                text-align:center;
+                color:#ffffff;
+            ">
+                    Dziękujemy za zakup
+                </h1>
+
+                <p style="
+                text-align:center; 
+                margin:0 0 30px; 
+                color:#aaa; 
+                font-size:15px; 
+                line-height:1.5;
+            ">
+                    Twoje zamówienie zostało zrealizowane pomyślnie.
+                </p>
+
+                <!-- Card Info -->
+                <div style="
+                background-color:rgba(255,255,255,0.05);
+                border-left: 3px solid #ffffff;
+                padding:20px;
+                margin-bottom:30px;
+                border-radius:4px;
+            ">
+                    <div style="margin-bottom:15px;">
+                        <span
+                            style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#777;">Utwór</span>
+                        <span
+                            style="display:block; font-size:18px; font-weight:600; color:#fff; margin-top:3px;">{{beatTitle}}</span>
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <span
+                            style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#777;">Produkcja</span>
+                        <span style="display:block; font-size:15px; color:#ccc; margin-top:3px;">{{producerName}}</span>
+                    </div>
+
+                    <div>
+                        <span
+                            style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#777;">Typ
+                            licencji</span>
+                        <span
+                            style="display:block; font-size:16px; color:#aaffaa; margin-top:3px;">{{licenseName}}</span>
+                    </div>
+
+                    <div style="margin-top:10px; font-size:11px; color:#555;">
+                        ID Zamówienia: {{orderId}}
+                    </div>
+                </div>
+
+                <!-- Main Message -->
+                <p style="font-size:15px; line-height:1.6; color:#ccc; margin-bottom:15px;">
+                    Cześć <strong>{{customerName}}</strong>!
+                </p>
+                <p style="font-size:15px; line-height:1.6; color:#ccc; margin-bottom:20px;">
+                    Twoja oficjalna licencja znajduje się w <strong>załączniku PDF</strong> do tej wiadomości. Prosimy o
+                    jej pobranie i bezpieczne przechowanie.
+                </p>
+
+                <div style="
+                background-color:#111; 
+                border:1px solid #333; 
+                padding:15px; 
+                font-size:13px; 
+                color:#999; 
+                border-radius:6px; 
+                margin-bottom:30px;
+                text-align: center;
+            ">
+                    ⏳ Pliki audio (WAV / Trackout) zostaną wysłane w osobnej wiadomości w ciągu <strong>48
+                        godzin</strong>.
+                </div>
+
+                <!-- Footer Contact -->
+                <div style="
+                border-top:1px solid #222; 
+                padding-top:20px; 
+                text-align:center; 
+                font-size:12px; 
+                color:#555;
+            ">
+                    <p style="margin:0 0 5px;">Masz pytania? Odpisz na tego maila.</p>
+                    <a href="mailto:hello@kontakt.studio.hypnagogia.pl"
+                        style="color:#777; text-decoration:none;">hello@kontakt.studio.hypnagogia.pl</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Branding -->
+        <div style="text-align:center; padding-top:20px; font-size:11px; color:#444;">
+            &copy; Studio Hypnagogia. All rights reserved.
+        </div>
+
+    </div>
+</body>
+
+</html>

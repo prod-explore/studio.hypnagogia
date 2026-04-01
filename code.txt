@@ -1,0 +1,1776 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+const handleStudioForm = require('./functions/StudioForm');
+const handleMixMasterForm = require('./functions/MixMasterForm');
+
+const cron = require("node-cron");
+const fs = require("fs");
+const path = require("path");
+const updateBeats = require("./functions/updateBeats");
+
+const app = express();
+app.set('trust proxy', 1);
+app.disable("x-powered-by");
+const PORT = 3000;
+
+// Rate limiter – max 20 requestów na minutę
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Middleware
+app.use(cors({
+  origin: ["https://studio.hypnagogia.pl"], // dopuszczalne domeny
+  methods: ["POST"],
+}));
+app.use(express.json({ limit: '200kb' })); // ograniczenie payloadu
+app.use(express.urlencoded({ extended: true }));
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+    return res.status(400).json({
+      status: "error",
+      message: "Nieprawidłowy format danych."
+    });
+  }
+  next(err);
+});
+app.use(limiter);
+
+// Endpoint do zgłoszeń do studia
+app.post('/api/studio', async (req, res) => {
+  try {
+    await handleStudioForm(req, res);
+  } catch (err) {
+      res.status(500).json({
+        status: 'error',
+        message: 'Wystąpił nieoczekiwany błąd serwera.',
+    });
+  }
+});
+
+// Endpoint do zgłoszeń Mix/Master
+
+app.post('/api/mixmaster', async (req, res) => {
+  try {
+    await handleMixMasterForm(req, res);
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Wystąpił nieoczekiwany błąd serwera.',
+    });
+  }
+});
+
+app.get("/api/beats", (req, res) => {
+  try {
+    const beats = fs.readFileSync(path.join(__dirname, "data/beats.json"), "utf8");
+    res.json(JSON.parse(beats));
+  } catch (err) {
+    res.status(500).json({ status: "error", message: "Błąd wczytywania beatów" });
+  }
+});
+
+// Obsługa nieistniejących endpointów
+app.use((req, res) => {
+  res.status(404).json({ status: 'error', message: 'Endpoint nie istnieje.' });
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'Wystąpił nieoczekiwany błąd serwera.',
+  });
+});
+
+// Uruchomienie serwera
+app.listen(PORT, () => {
+  console.log(`Backend działa na porcie ${PORT}`);
+});
+
+// Cron — codziennie o 18:00
+cron.schedule("0 18 * * *", () => {
+  console.log("CRON: aktualizacja listy beatów...");
+  updateBeats();
+});
+
+// Jednorazowe pobranie przy starcie
+updateBeats();
+{
+  "ATSTUDIO": { "discount": 20, "type": "percent", "validUntil": "2025-01-31", "maxUses": 50, "used": 0 },
+  "FRIEND50": { "discount": 50, "type": "percent", "validUntil": null, "maxUses": 5, "used": 0 }
+}
+[]
+const fs = require('fs');
+const path = require('path');
+const sendMail = require('../utils/mailer');
+
+const escapeHtml = (unsafe) => {
+  if (typeof unsafe !== 'string') return unsafe;
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
+
+const templates = {
+  'StudioClient.html': fs.readFileSync(path.join(__dirname, '../utils/mailTemplates', 'StudioClient.html'), 'utf-8'),
+  'StudioBooked.html': fs.readFileSync(path.join(__dirname, '../utils/mailTemplates', 'StudioBooked.html'), 'utf-8')
+};
+
+function validateStudioForm(data) {
+  const errors = [];
+
+  if (!data.name || typeof data.name !== 'string' || data.name.trim() === '') {
+    errors.push({ field: 'name', message: 'Imię jest wymagane' });
+  } else if (data.name.length > 30) {
+    errors.push({ field: 'name', message: 'Imię może mieć max 30 znaków' });
+  }
+
+  if (!data.email || typeof data.email !== 'string' || data.email.trim() === '') {
+    errors.push({ field: 'email', message: 'Email jest wymagany' });
+  } else {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      errors.push({ field: 'email', message: 'Niepoprawny format email' });
+    } else if (data.email.length > 50) {
+      errors.push({ field: 'email', message: 'Email może mieć max 50 znaków' });
+    }
+  }
+
+  const allowedTypes = ['stationary', 'mobile'];
+  if (!data.studioType || !allowedTypes.includes(data.studioType)) {
+    errors.push({ field: 'studioType', message: 'Niepoprawny typ studia' });
+  }
+
+  if (!data.date || typeof data.date !== 'string') {
+    errors.push({ field: 'date', message: 'Data jest wymagana' });
+  } else {
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 90);
+
+    const dateValue = new Date(data.date);
+    if (isNaN(dateValue.getTime())) {
+      errors.push({ field: 'date', message: 'Niepoprawny format daty' });
+    } else if (dateValue < today) {
+      errors.push({ field: 'date', message: 'Data nie może być w przeszłości' });
+    } else if (dateValue > maxDate) {
+      errors.push({ field: 'date', message: 'Data nie może być dalej niż 90 dni' });
+    }
+  }
+
+  if (!data.startHour || typeof data.startHour !== 'string') {
+    errors.push({ field: 'startHour', message: 'Godzina rozpoczęcia jest wymagana' });
+  } else if (!/^([01]\d|2[0-3]):([0-5]\d)$/.test(data.startHour)) {
+    errors.push({ field: 'startHour', message: 'Niepoprawny format godziny (HH:MM)' });
+  }
+
+  if (typeof data.sessionLength !== 'number' || isNaN(data.sessionLength)) {
+    errors.push({ field: 'sessionLength', message: 'Długość sesji musi być liczbą' });
+  } else if (data.sessionLength <= 0 || data.sessionLength > 480) {
+    errors.push({ field: 'sessionLength', message: 'Długość sesji musi być 1–480 minut' });
+  }
+
+  if (data.comment && typeof data.comment === 'string') {
+    if (data.comment.length > 200) {
+      errors.push({ field: 'comment', message: 'Komentarz może mieć max 200 znaków' });
+    }
+    if (!/^[a-zA-Z0-9\s,.\-ąćęłńóśźżĄĆĘŁŃÓŚŹŻ!]*$/.test(data.comment)) {
+      errors.push({ field: 'comment', message: 'Komentarz zawiera niedozwolone znaki' });
+    }
+  }
+
+  return errors;
+}
+
+function fillTemplate(fileName, data) {
+  let template = templates[fileName];
+
+  if (!template) {
+      console.error(`Template not found: ${fileName}`);
+      throw new Error('Internal Server Error: Missing Template');
+  }
+
+  const safeData = {};
+  Object.keys(data).forEach(key => {
+      safeData[key] = escapeHtml(String(data[key]));
+  });
+
+  Object.keys(safeData).forEach(key => {
+    const regex = new RegExp(`{{${key}}}`, 'g');
+    template = template.replace(regex, safeData[key] || '');
+  });
+
+  // Obsługa optional comment
+  template = template.replace(/{{#comment}}([\s\S]*?){{\/comment}}/g, safeData.comment ? '$1' : '');
+  return template;
+}
+
+// ----------------- HANDLER -----------------
+async function handleStudioForm(req, res) {
+  const data = req.body;
+
+  if (!data || typeof data !== 'object') {
+    return res.status(400).json({ status: 'error', message: 'Niepoprawne dane formularza' });
+  }
+
+  const errors = validateStudioForm(data);
+  if (errors.length > 0) {
+    return res.status(400).json({ status: 'error', errors });
+  }
+
+  try {
+    // Generate HTML using the cached, safe function
+    const clientHtml = fillTemplate('StudioClient.html', data);
+    const adminHtml = fillTemplate('StudioBooked.html', data);
+
+    await Promise.all([
+        sendMail(data.email, 'Potwierdzenie zgłoszenia', clientHtml)
+            .then(() => console.log(`Mail do klienta wysłany: ${data.email}`)),
+        sendMail(process.env.ADMIN_EMAIL, `Nowe zgłoszenie od ${data.name}`, adminHtml)
+            .then(() => console.log(`Mail do admina wysłany: ${process.env.ADMIN_EMAIL}`))
+    ]);
+
+    console.log('Formularz odebrany i przetworzony:', data);
+    return res.json({ status: 'ok', message: 'Formularz odebrany i mail wysłany' });
+  } catch (err) {
+    console.error('Błąd przy wysyłce maila:', err.message);
+    return res.status(500).json({ status: 'error', message: 'Nie udało się wysłać maila' });
+  }
+}
+
+module.exports = handleStudioForm;
+const fs = require('fs');
+const path = require('path');
+const sendMail = require('../utils/mailer');
+
+const escapeHtml = (unsafe) => {
+  if (typeof unsafe !== 'string') return unsafe;
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
+
+// Wczytanie template'ów maili
+const templates = {
+  'MixMasterClient.html': fs.readFileSync(path.join(__dirname, '../utils/mailTemplates', 'MixMasterClient.html'), 'utf-8'),
+  'MixMasterBooked.html': fs.readFileSync(path.join(__dirname, '../utils/mailTemplates', 'MixMasterBooked.html'), 'utf-8')
+};
+
+// Walidacja danych formularza
+function validateMixMasterForm(data) {
+  const errors = [];
+
+  if (!data.name || typeof data.name !== 'string' || data.name.trim() === '') {
+    errors.push({ field: 'name', message: 'Imię jest wymagane' });
+  } else if (data.name.length > 30) {
+    errors.push({ field: 'name', message: 'Imię może mieć max 30 znaków' });
+  }
+
+  if (!data.email || typeof data.email !== 'string' || data.email.trim() === '') {
+    errors.push({ field: 'email', message: 'Email jest wymagany' });
+  } else {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      errors.push({ field: 'email', message: 'Niepoprawny format email' });
+    } else if (data.email.length > 50) {
+      errors.push({ field: 'email', message: 'Email może mieć max 50 znaków' });
+    }
+  }
+
+  if (!data.link || typeof data.link !== 'string' || data.link.trim() === '') {
+    errors.push({ field: 'link', message: 'Link do plików jest wymagany' });
+  } else if (!/^https?:\/\/.+/.test(data.link)) {
+    errors.push({ field: 'link', message: 'Link musi być poprawnym URL' });
+  } else if (data.link.length > 500) {
+    errors.push({ field: 'link', message: 'Link jest za długi (max 500 znaków)' });
+  }
+
+  if (data.comment && typeof data.comment === 'string') {
+    if (data.comment.length > 200) {
+      errors.push({ field: 'comment', message: 'Komentarz może mieć max 200 znaków' });
+    }
+    if (!/^[\p{L}0-9\s.,!?'"()\/+\-–—_:@#%&]*$/u.test(data.comment)) {
+      errors.push({ field: 'comment', message: 'Komentarz zawiera niedozwolone znaki' });
+    }
+}
+
+
+  return errors;
+}
+
+// Wypełnianie template
+function fillTemplate(fileName, data) {
+  let template = templates[fileName];
+  if (!template) {
+    console.error(`Template not found: ${fileName}`);
+    throw new Error('Internal Server Error: Missing Template');
+  }
+
+  const safeData = {};
+  Object.keys(data).forEach(key => {
+    safeData[key] = escapeHtml(String(data[key]));
+  });
+
+  Object.keys(safeData).forEach(key => {
+    const regex = new RegExp(`{{${key}}}`, 'g');
+    template = template.replace(regex, safeData[key] || '');
+  });
+
+  template = template.replace(/{{#comment}}([\s\S]*?){{\/comment}}/g, safeData.comment ? '$1' : '');
+  return template;
+}
+
+// ----------------- HANDLER -----------------
+async function handleMixMasterForm(req, res) {
+  const data = req.body;
+
+  if (!data || typeof data !== 'object') {
+    return res.status(400).json({ status: 'error', message: 'Niepoprawne dane formularza' });
+  }
+
+  const errors = validateMixMasterForm(data);
+  if (errors.length > 0) {
+    return res.status(400).json({ status: 'error', errors });
+  }
+
+  try {
+    const clientHtml = fillTemplate('MixMasterClient.html', data);
+    const adminHtml = fillTemplate('MixMasterBooked.html', data);
+
+    await Promise.all([
+      sendMail(data.email, 'Potwierdzenie zgłoszenia', clientHtml),
+      sendMail(process.env.ADMIN_EMAIL, `Nowe zgłoszenie Mix/Master od ${data.name}`, adminHtml)
+    ]);
+
+    console.log('Mix/Master formularz odebrany i przetworzony:', data);
+    return res.json({ status: 'ok', message: 'Formularz odebrany i mail wysłany' });
+  } catch (err) {
+    console.error('Błąd przy wysyłce maila:', err.message);
+    return res.status(500).json({ status: 'error', message: 'Nie udało się wysłać maila' });
+  }
+}
+
+module.exports = handleMixMasterForm;
+const PDFDocument = require('pdfkit');
+const { v4: uuidv4 } = require('uuid');
+
+const LICENSE_TERMS = {
+    lease_basic: {
+        name: 'Lease Basic',
+        price: 49,
+        streams: '50,000',
+        sales: '2,500',
+        musicVideos: '1',
+        radio: false,
+        stems: false,
+        exclusive: false,
+        terms: `
+LEASE BASIC LICENSE AGREEMENT
+
+This License Agreement ("Agreement") is made between the Producer and the Licensee identified below.
+
+GRANT OF LICENSE:
+Producer grants Licensee a non-exclusive license to use the Beat for the creation of one (1) new musical composition ("New Song").
+
+PERMITTED USES:
+• Up to 50,000 audio streams (Spotify, Apple Music, etc.)
+• Up to 2,500 physical/digital sales
+• 1 music video (non-monetized or monetized)
+• Non-profit live performances
+• Social media content
+
+RESTRICTIONS:
+• Radio broadcasting is NOT permitted
+• Stems are NOT included
+• Resale or transfer of this license is prohibited
+• The Beat may be licensed to other artists (non-exclusive)
+
+CREDIT REQUIREMENT:
+Licensee must credit Producer in all metadata and descriptions as: "Prod. by [PRODUCER_NAME]"
+
+OWNERSHIP:
+• Producer retains full copyright and ownership of the Beat composition
+• Licensee owns the Master Recording of the New Song (vocals + beat)
+
+ROYALTIES:
+• Publishing: 50% to Producer, 50% to Licensee
+• No master royalty share for this license tier
+
+DELIVERY:
+Beat files will be delivered within 48 hours of purchase via email.
+
+This license is non-transferable and may not be resold or assigned to any third party.
+`
+    },
+    lease_premium: {
+        name: 'Lease Premium',
+        price: 179,
+        streams: '500,000',
+        sales: '10,000',
+        musicVideos: '3',
+        radio: true,
+        stems: true,
+        exclusive: false,
+        terms: `
+LEASE PREMIUM LICENSE AGREEMENT
+
+This License Agreement ("Agreement") is made between the Producer and the Licensee identified below.
+
+GRANT OF LICENSE:
+Producer grants Licensee a non-exclusive license to use the Beat for the creation of one (1) new musical composition ("New Song").
+
+PERMITTED USES:
+• Up to 500,000 audio streams (Spotify, Apple Music, etc.)
+• Up to 10,000 physical/digital sales
+• Up to 3 music videos (monetized permitted)
+• Radio broadcasting permitted
+• Live performances (profit and non-profit)
+• Social media content without limitations
+
+STEMS:
+Stems/trackouts available upon request at no additional cost.
+
+RESTRICTIONS:
+• Resale or transfer of this license is prohibited
+• The Beat may be licensed to other artists (non-exclusive)
+
+CREDIT REQUIREMENT:
+Licensee must credit Producer in all metadata and descriptions as: "Prod. by [PRODUCER_NAME]"
+
+OWNERSHIP:
+• Producer retains full copyright and ownership of the Beat composition
+• Licensee owns the Master Recording of the New Song (vocals + beat)
+
+ROYALTIES:
+• Publishing: 50% to Producer, 50% to Licensee
+• Master royalties: 20% of Licensee's net revenues (if signed to label)
+
+DELIVERY:
+Beat files will be delivered within 48 hours of purchase via email.
+Stems available upon request.
+
+This license is non-transferable and may not be resold or assigned to any third party.
+`
+    },
+    exclusive: {
+        name: 'Exclusive',
+        price: 888,
+        streams: 'Unlimited',
+        sales: 'Unlimited',
+        musicVideos: 'Unlimited',
+        radio: true,
+        stems: true,
+        exclusive: true,
+        terms: `
+EXCLUSIVE LICENSE AGREEMENT
+
+This License Agreement ("Agreement") is made between the Producer and the Licensee identified below.
+
+GRANT OF LICENSE:
+Producer grants Licensee an EXCLUSIVE license to use the Beat for the creation of musical compositions.
+Upon execution of this Agreement, Producer will not license this Beat to any other party.
+
+PERMITTED USES:
+• UNLIMITED audio streams
+• UNLIMITED physical/digital sales
+• UNLIMITED music videos
+• Radio broadcasting permitted
+• Television and film synchronization permitted
+• Live performances without restrictions
+• All commercial uses permitted
+
+STEMS:
+Full stems/trackouts included with this license.
+
+MODIFICATIONS:
+Licensee may request modifications to the Beat. Minor changes included; major revisions may incur additional fees to be agreed upon.
+
+CREDIT REQUIREMENT:
+Licensee should credit Producer in all metadata and descriptions as: "Prod. by [PRODUCER_NAME]"
+Credit is appreciated but not legally required for exclusive licenses.
+
+OWNERSHIP:
+• Producer retains copyright of the original Beat composition
+• Licensee receives exclusive usage rights - Beat will not be sold to others
+• Licensee owns the Master Recording of any songs created with the Beat
+
+ROYALTIES:
+• Publishing: 50% to Producer, 50% to Licensee
+• Master royalties: 20% of Licensee's net revenues (if signed to label)
+
+DELIVERY:
+Beat files and stems will be delivered within 48 hours of purchase via email.
+
+This license is non-transferable without Producer's written consent.
+Previous non-exclusive licenses for this Beat remain valid but no new licenses will be issued.
+`
+    }
+};
+
+/**
+ * Generate a PDF license document
+ * @param {Object} orderData - Order information
+ * @returns {Promise<Buffer>} PDF buffer
+ */
+function generateLicensePDF(orderData) {
+    return new Promise((resolve, reject) => {
+        const doc = new PDFDocument({ margin: 50 });
+        const chunks = [];
+
+        doc.on('data', chunk => chunks.push(chunk));
+        doc.on('end', () => resolve(Buffer.concat(chunks)));
+        doc.on('error', reject);
+
+        const license = LICENSE_TERMS[orderData.licenseType];
+        const licenseId = `LIC-${uuidv4().substring(0, 8).toUpperCase()}`;
+        const date = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Header
+        doc.fontSize(24).font('Helvetica-Bold').text('BEAT LICENSE AGREEMENT', { align: 'center' });
+        doc.moveDown();
+
+        // License ID and Date
+        doc.fontSize(10).font('Helvetica')
+            .text(`License ID: ${licenseId}`, { align: 'center' })
+            .text(`Date: ${date}`, { align: 'center' });
+        doc.moveDown();
+
+        // Divider
+        doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+        doc.moveDown();
+
+        // Parties
+        doc.fontSize(12).font('Helvetica-Bold').text('PARTIES:');
+        doc.fontSize(10).font('Helvetica')
+            .text(`Producer: ${orderData.producerName}`)
+            .text(`Licensee: ${orderData.customerName}`)
+            .text(`Email: ${orderData.customerEmail}`);
+        if (orderData.artistLink) {
+            doc.text(`Artist Page: ${orderData.artistLink}`);
+        }
+        doc.moveDown();
+
+        // Beat Info
+        doc.fontSize(12).font('Helvetica-Bold').text('BEAT INFORMATION:');
+        doc.fontSize(10).font('Helvetica')
+            .text(`Beat Title: ${orderData.beatTitle}`)
+            .text(`License Type: ${license.name}`)
+            .text(`Price Paid: ${orderData.finalPrice} PLN`);
+        if (orderData.promoCode) {
+            doc.text(`Promo Code Applied: ${orderData.promoCode}`);
+        }
+        doc.moveDown();
+
+        // Usage Rights Table
+        doc.fontSize(12).font('Helvetica-Bold').text('USAGE RIGHTS:');
+        doc.fontSize(10).font('Helvetica')
+            .text(`• Streams: ${license.streams}`)
+            .text(`• Sales: ${license.sales}`)
+            .text(`• Music Videos: ${license.musicVideos}`)
+            .text(`• Radio: ${license.radio ? 'Yes' : 'No'}`)
+            .text(`• Stems: ${license.stems ? 'Yes' : 'No'}`)
+            .text(`• Exclusive: ${license.exclusive ? 'Yes' : 'No'}`);
+        doc.moveDown();
+
+        // Full Terms
+        doc.fontSize(12).font('Helvetica-Bold').text('FULL LICENSE TERMS:');
+        doc.moveDown(0.5);
+
+        // Replace placeholder with actual producer name
+        const terms = license.terms.replace(/\[PRODUCER_NAME\]/g, orderData.producerName);
+        doc.fontSize(9).font('Helvetica').text(terms.trim(), {
+            align: 'left',
+            lineGap: 2
+        });
+
+        doc.moveDown(2);
+
+        // Signature area
+        doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+        doc.moveDown();
+        doc.fontSize(10).font('Helvetica')
+            .text('This is an automatically generated license. By purchasing, both parties agree to the terms above.')
+            .moveDown()
+            .text(`Generated: ${new Date().toISOString()}`, { align: 'right' });
+
+        doc.end();
+    });
+}
+
+module.exports = { generateLicensePDF, LICENSE_TERMS };
+const Stripe = require('stripe');
+const fs = require('fs');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+const { generateLicensePDF, LICENSE_TERMS } = require('./generateLicensePDF');
+const sendMail = require('../utils/mailer');
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+const ORDERS_PATH = path.join(__dirname, '../data/orders.json');
+const PROMO_PATH = path.join(__dirname, '../data/promoCodes.json');
+const BEATS_PATH = path.join(__dirname, '../data/beats.json');
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+function loadJSON(filepath) {
+    try {
+        return JSON.parse(fs.readFileSync(filepath, 'utf8'));
+    } catch (err) {
+        console.error(`Error loading ${filepath}:`, err.message);
+        return filepath.includes('orders') ? [] : {};
+    }
+}
+
+function saveJSON(filepath, data) {
+    fs.writeFileSync(filepath, JSON.stringify(data, null, 2), 'utf8');
+}
+
+/**
+ * Check if a beat has been sold exclusively
+ */
+function isExclusivelySold(beatId) {
+    const orders = loadJSON(ORDERS_PATH);
+    return orders.some(order =>
+        order.beatId === beatId &&
+        order.licenseType === 'exclusive' &&
+        order.status === 'completed'
+    );
+}
+
+/**
+ * Validate and apply promo code
+ */
+function validatePromoCode(code) {
+    if (!code) return { valid: false };
+
+    const promoCodes = loadJSON(PROMO_PATH);
+    const promo = promoCodes[code.toUpperCase()];
+
+    if (!promo) {
+        return { valid: false, error: 'Nieprawidłowy kod promocyjny' };
+    }
+
+    // Check expiration
+    if (promo.validUntil && new Date(promo.validUntil) < new Date()) {
+        return { valid: false, error: 'Kod promocyjny wygasł' };
+    }
+
+    // Check max uses
+    if (promo.maxUses !== null && promo.used >= promo.maxUses) {
+        return { valid: false, error: 'Kod promocyjny został wykorzystany' };
+    }
+
+    return {
+        valid: true,
+        discount: promo.discount,
+        type: promo.type,
+        code: code.toUpperCase()
+    };
+}
+
+/**
+ * Increment promo code usage
+ */
+function incrementPromoUsage(code) {
+    if (!code) return;
+
+    const promoCodes = loadJSON(PROMO_PATH);
+    if (promoCodes[code]) {
+        promoCodes[code].used += 1;
+        saveJSON(PROMO_PATH, promoCodes);
+    }
+}
+
+/**
+ * Calculate final price after promo
+ */
+function calculateFinalPrice(basePrice, promo) {
+    if (!promo || !promo.valid) return basePrice;
+
+    if (promo.type === 'percent') {
+        return Math.round(basePrice * (1 - promo.discount / 100));
+    } else if (promo.type === 'fixed') {
+        return Math.max(0, basePrice - promo.discount);
+    }
+    return basePrice;
+}
+
+/**
+ * Get beat info by ID
+ */
+function getBeatById(beatId) {
+    const beats = loadJSON(BEATS_PATH);
+    return beats.find(b => b.id === beatId);
+}
+
+// ============================================
+// API HANDLERS
+// ============================================
+
+/**
+ * POST /api/beats/validate-promo
+ * Validate a promo code
+ */
+async function validatePromo(req, res) {
+    try {
+        const { code, licenseType } = req.body;
+
+        if (!code) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Kod promocyjny jest wymagany'
+            });
+        }
+
+        const promo = validatePromoCode(code);
+
+        if (!promo.valid) {
+            return res.status(400).json({
+                status: 'error',
+                message: promo.error
+            });
+        }
+
+        // Calculate discount preview if license type provided
+        let discountPreview = null;
+        if (licenseType && LICENSE_TERMS[licenseType]) {
+            const basePrice = LICENSE_TERMS[licenseType].price;
+            const finalPrice = calculateFinalPrice(basePrice, promo);
+            discountPreview = {
+                originalPrice: basePrice,
+                finalPrice: finalPrice,
+                saved: basePrice - finalPrice
+            };
+        }
+
+        return res.json({
+            status: 'success',
+            discount: promo.discount,
+            type: promo.type,
+            preview: discountPreview
+        });
+
+    } catch (err) {
+        console.error('Validate promo error:', err);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Błąd walidacji kodu'
+        });
+    }
+}
+
+/**
+ * POST /api/beats/checkout
+ * Create Stripe Checkout Session
+ */
+async function handleBeatsCheckout(req, res) {
+    try {
+        const {
+            email,
+            name,
+            artistLink,
+            beatId,
+            licenseType,
+            promoCode
+        } = req.body;
+
+        // Validate required fields
+        if (!email || !name || !beatId || !licenseType) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Brakuje wymaganych pól: email, name, beatId, licenseType'
+            });
+        }
+
+        // Validate license type
+        if (!LICENSE_TERMS[licenseType]) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Nieprawidłowy typ licencji'
+            });
+        }
+
+        // Get beat info
+        const beat = getBeatById(beatId);
+        if (!beat) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Beat nie został znaleziony'
+            });
+        }
+
+        // Check if beat is exclusively sold
+        if (isExclusivelySold(beatId)) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Ten beat został już sprzedany na wyłączność'
+            });
+        }
+
+        // Validate promo code
+        const promo = validatePromoCode(promoCode);
+
+        // Calculate price
+        const license = LICENSE_TERMS[licenseType];
+        const finalPrice = calculateFinalPrice(license.price, promo);
+
+        // Create order ID
+        const orderId = `ord_${uuidv4().substring(0, 12)}`;
+
+        // Create Stripe Checkout Session
+        const session = await stripe.checkout.sessions.create({
+            mode: 'payment',
+            customer_email: email,
+            line_items: [{
+                price_data: {
+                    currency: 'pln',
+                    product_data: {
+                        name: `${beat.title} - ${license.name} License`,
+                        description: `Licencja ${license.name} na beat "${beat.title}"`,
+                    },
+                    unit_amount: finalPrice * 100, // Stripe uses cents/grosze
+                },
+                quantity: 1,
+            }],
+            metadata: {
+                orderId: orderId,
+                beatId: beatId,
+                beatTitle: beat.title,
+                licenseType: licenseType,
+                customerEmail: email,
+                customerName: name,
+                artistLink: artistLink || '',
+                promoCode: promo.valid ? promo.code : '',
+                originalPrice: license.price.toString(),
+                finalPrice: finalPrice.toString(),
+            },
+            success_url: `${process.env.STRIPE_SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: process.env.STRIPE_CANCEL_URL,
+        });
+
+        // Save pending order
+        const orders = loadJSON(ORDERS_PATH);
+        orders.push({
+            id: orderId,
+            beatId: beatId,
+            beatTitle: beat.title,
+            licenseType: licenseType,
+            customerEmail: email,
+            customerName: name,
+            artistLink: artistLink || null,
+            promoCode: promo.valid ? promo.code : null,
+            originalPrice: license.price,
+            finalPrice: finalPrice,
+            stripeSessionId: session.id,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+        });
+        saveJSON(ORDERS_PATH, orders);
+
+        return res.json({
+            status: 'success',
+            checkoutUrl: session.url,
+            sessionId: session.id
+        });
+
+    } catch (err) {
+        console.error('Checkout error:', err);
+        return res.status(500).json({
+            status: 'error',
+            message: 'Błąd tworzenia sesji płatności'
+        });
+    }
+}
+
+/**
+ * POST /api/beats/webhook
+ * Handle Stripe webhook events
+ */
+async function handleBeatsWebhook(req, res) {
+    const sig = req.headers['stripe-signature'];
+    let event;
+
+    try {
+        event = stripe.webhooks.constructEvent(
+            req.body,
+            sig,
+            process.env.STRIPE_WEBHOOK_SECRET
+        );
+    } catch (err) {
+        console.error('Webhook signature verification failed:', err.message);
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle the event
+    if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+
+        try {
+            await processSuccessfulPayment(session);
+        } catch (err) {
+            console.error('Error processing payment:', err);
+            // Still return 200 to Stripe so they don't retry
+        }
+    }
+
+    res.json({ received: true });
+}
+
+/**
+ * Process successful payment - generate license and send emails
+ */
+async function processSuccessfulPayment(session) {
+    const metadata = session.metadata;
+
+    // Update order status
+    const orders = loadJSON(ORDERS_PATH);
+    const orderIndex = orders.findIndex(o => o.id === metadata.orderId);
+
+    if (orderIndex !== -1) {
+        orders[orderIndex].status = 'completed';
+        orders[orderIndex].completedAt = new Date().toISOString();
+        orders[orderIndex].stripePaymentIntent = session.payment_intent;
+        saveJSON(ORDERS_PATH, orders);
+    }
+
+    // Increment promo code usage
+    if (metadata.promoCode) {
+        incrementPromoUsage(metadata.promoCode);
+    }
+
+    // Generate license PDF
+    const orderData = {
+        orderId: metadata.orderId,
+        beatId: metadata.beatId,
+        beatTitle: metadata.beatTitle,
+        licenseType: metadata.licenseType,
+        customerEmail: metadata.customerEmail,
+        customerName: metadata.customerName,
+        artistLink: metadata.artistLink,
+        promoCode: metadata.promoCode,
+        originalPrice: parseInt(metadata.originalPrice),
+        finalPrice: parseInt(metadata.finalPrice),
+        producerName: process.env.PRODUCER_NAME || 'HYPNAGOGIA'
+    };
+
+    const licensePDF = await generateLicensePDF(orderData);
+
+    // Send email to customer
+    await sendClientEmail(orderData, licensePDF);
+
+    // Send notification to admin
+    await sendAdminEmail(orderData);
+
+    console.log(`✅ Order ${metadata.orderId} completed - License sent to ${metadata.customerEmail}`);
+}
+
+/**
+ * Send license email to customer
+ */
+async function sendClientEmail(orderData, licensePDF) {
+    const license = LICENSE_TERMS[orderData.licenseType];
+
+    const html = fs.readFileSync(
+        path.join(__dirname, '../utils/mailTemplates/BeatLicenseClient.html'),
+        'utf8'
+    )
+        .replace(/{{customerName}}/g, orderData.customerName)
+        .replace(/{{beatTitle}}/g, orderData.beatTitle)
+        .replace(/{{licenseName}}/g, license.name)
+        .replace(/{{orderId}}/g, orderData.orderId)
+        .replace(/{{producerName}}/g, orderData.producerName);
+
+    await sendMail({
+        to: orderData.customerEmail,
+        subject: `🎵 Twoja licencja na beat "${orderData.beatTitle}"`,
+        html: html,
+        attachments: [{
+            filename: `License_${orderData.beatTitle.replace(/[^a-zA-Z0-9]/g, '_')}_${orderData.orderId}.pdf`,
+            content: licensePDF,
+            contentType: 'application/pdf'
+        }]
+    });
+}
+
+/**
+ * Send notification email to admin
+ */
+async function sendAdminEmail(orderData) {
+    const license = LICENSE_TERMS[orderData.licenseType];
+
+    const html = fs.readFileSync(
+        path.join(__dirname, '../utils/mailTemplates/BeatPurchaseAdmin.html'),
+        'utf8'
+    )
+        .replace(/{{orderId}}/g, orderData.orderId)
+        .replace(/{{customerName}}/g, orderData.customerName)
+        .replace(/{{customerEmail}}/g, orderData.customerEmail)
+        .replace(/{{artistLink}}/g, orderData.artistLink || 'Nie podano')
+        .replace(/{{beatTitle}}/g, orderData.beatTitle)
+        .replace(/{{licenseName}}/g, license.name)
+        .replace(/{{originalPrice}}/g, orderData.originalPrice)
+        .replace(/{{finalPrice}}/g, orderData.finalPrice)
+        .replace(/{{promoCode}}/g, orderData.promoCode || 'Brak')
+        .replace(/{{date}}/g, new Date().toLocaleString('pl-PL'));
+
+    await sendMail({
+        to: process.env.ADMIN_EMAIL || process.env.MAIL_USER,
+        subject: `💰 Nowa sprzedaż: ${orderData.beatTitle} (${license.name})`,
+        html: html
+    });
+}
+
+module.exports = {
+    handleBeatsCheckout,
+    handleBeatsWebhook,
+    validatePromo
+};
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+
+async function updateBeats() {
+  const YT_API_KEY = process.env.YT_API_KEY;
+  const CHANNEL_ID = process.env.YT_CHANNEL_ID;
+
+  try {
+    const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=50&order=date&type=video&key=${YT_API_KEY}`;
+    const res = await axios.get(url);
+    const items = res.data.items || [];
+
+    const beats = items.map(item => ({
+      id: item.id.videoId,
+      title: item.snippet.title,
+      thumbnail: item.snippet.thumbnails?.high?.url,
+      publishedAt: item.snippet.publishedAt
+    }));
+
+    const filePath = path.join(__dirname, "../data/beats.json");
+    fs.writeFileSync(filePath, JSON.stringify(beats, null, 2));
+
+    console.log("Lista beatów zaktualizowana:", beats.length);
+  } catch (err) {
+    console.error("Błąd aktualizacji beatów:", err.message);
+  }
+}
+
+module.exports = updateBeats;
+{
+  "name": "backend-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "joi": "^17.11.0",
+    "mailgun.js": "^9.3.0",
+    "form-data": "^4.0.0",
+    "helmet": "7.1.0",
+    "express-rate-limit": "^7.0.0",
+    "node-cron": "^3.0.2",
+    "axios": "^1.5.0",
+    "pdfkit": "^0.14.0",
+    "stripe": "^14.0.0",
+    "uuid": "^9.0.0"
+  }
+}
+const formData = require('form-data');
+const Mailgun = require('mailgun.js');
+
+const mailgun = new Mailgun(formData);
+const mgClient = mailgun.client({
+    username: 'api',
+    key: process.env.MAILGUN_API_KEY,
+    url: 'https://api.eu.mailgun.net',
+});
+
+/**
+ * Send email using Mailgun
+ * Supports two signatures:
+ * 1. sendMail(to, subject, html) - Legacy/Production style
+ * 2. sendMail({ to, subject, html, attachments }) - New style (Beat Purchase)
+ */
+async function sendMail(arg1, arg2, arg3) {
+    let to, subject, html, attachments;
+
+    if (typeof arg1 === 'object' && arg1 !== null) {
+        // Object signature: { to, subject, html, attachments }
+        ({ to, subject, html, attachments } = arg1);
+    } else {
+        // Legacy signature: (to, subject, html)
+        to = arg1;
+        subject = arg2;
+        html = arg3;
+    }
+
+    if (!to || !subject || !html) throw new Error("Brak wymaganych danych do wysyłki maila");
+
+    const messageData = {
+        from: `Studio Hypnagogia <no-reply@${process.env.MAILGUN_DOMAIN}>`,
+        to,
+        subject,
+        html,
+        "h:Auto-Submitted": "auto-generated",
+        "h:Precedence": "bulk",
+    };
+
+    // Handle attachments if present
+    if (attachments && Array.isArray(attachments) && attachments.length > 0) {
+        messageData.attachment = attachments.map(att => {
+            // Mailgun expects { filename, data } or just data
+            // BeatPurchase sends { filename, content, contentType } where content is Buffer
+            return {
+                filename: att.filename,
+                data: att.content
+            };
+        });
+    }
+
+    return mgClient.messages.create(process.env.MAILGUN_DOMAIN, messageData);
+}
+
+module.exports = sendMail;
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Potwierdzenie zgłoszenia – Mix/Master</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }
+    .container { background: #ffffff; padding: 30px; max-width: 600px; margin: auto; border-radius: 8px; }
+    h1 { color: #111; font-size: 22px; }
+    p { font-size: 15px; line-height: 1.6; }
+    .footer { margin-top: 25px; font-size: 13px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cześć {{name}}!</h1>
+
+    <p>
+      Dziękujemy za przesłanie zgłoszenia dotyczącego <strong>mixu/masteringu</strong>.
+      Właśnie otrzymaliśmy Twoje materiały i rozpoczniemy ich weryfikację.
+    </p>
+
+    <p>
+      W ciągu najbliższego czasu przygotujemy dla Ciebie <strong>wycenę projektu</strong> oraz
+      przekażemy dalsze informacje dotyczące realizacji.
+    </p>
+
+    <p>
+      <strong>Link do plików:</strong><br>
+      <a href="{{link}}" target="_blank">{{link}}</a>
+    </p>
+
+    {{#comment}}
+    <p>
+      <strong>Twój komentarz:</strong><br>
+      {{comment}}
+    </p>
+    {{/comment}}
+
+    <div class="footer">
+      W razie pytań prosimy o kontakt na adres:<br>
+      <strong>hello@kontakt.studio.hypnagogia.pl</strong><br><br>
+      Pozdrawiamy,<br>
+      Hypnagogia Studio
+    </div>
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nowa sprzedaż beatu</title>
+</head>
+
+<body
+    style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0a; color: #ffffff;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-size: 28px; margin: 0; color: #22c55e;">
+                💰 Nowa sprzedaż!
+            </h1>
+        </div>
+
+        <!-- Main Content -->
+        <div
+            style="background: linear-gradient(145deg, #1a1a2e, #16213e); border-radius: 16px; padding: 32px; border: 1px solid rgba(34, 197, 94, 0.3);">
+
+            <!-- Order Info -->
+            <div style="margin-bottom: 24px;">
+                <p style="font-size: 12px; color: #666; margin: 0 0 4px 0;">Order ID</p>
+                <p style="font-size: 14px; color: #888; margin: 0; font-family: monospace;">{{orderId}}</p>
+            </div>
+
+            <!-- Beat & License -->
+            <div
+                style="background: rgba(34, 197, 94, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 24px; border-left: 4px solid #22c55e;">
+                <p style="margin: 0 0 8px 0; font-size: 14px; color: #888;">Beat:</p>
+                <p style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">{{beatTitle}}</p>
+                <p style="margin: 12px 0 0 0; font-size: 16px; color: #22c55e;">{{licenseName}}</p>
+            </div>
+
+            <!-- Price -->
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;">
+                <div>
+                    <p style="margin: 0; font-size: 14px; color: #888;">Cena oryginalna:</p>
+                    <p style="margin: 4px 0 0 0; font-size: 16px; color: #aaa; text-decoration: line-through;">
+                        {{originalPrice}} PLN</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="margin: 0; font-size: 14px; color: #888;">Zapłacono:</p>
+                    <p style="margin: 4px 0 0 0; font-size: 24px; font-weight: bold; color: #22c55e;">{{finalPrice}} PLN
+                    </p>
+                </div>
+            </div>
+
+            <!-- Promo Code -->
+            <div style="margin-bottom: 24px;">
+                <p style="font-size: 12px; color: #666; margin: 0 0 4px 0;">Kod promocyjny:</p>
+                <p style="font-size: 14px; color: #a855f7; margin: 0;">{{promoCode}}</p>
+            </div>
+
+            <!-- Customer Info -->
+            <div style="border-top: 1px solid #333; padding-top: 24px;">
+                <p style="font-size: 14px; color: #888; margin: 0 0 16px 0;">📧 Dane klienta:</p>
+
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666; width: 100px;">Imię:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #ffffff;">{{customerName}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666;">Email:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #ffffff;">
+                            <a href="mailto:{{customerEmail}}"
+                                style="color: #60a5fa; text-decoration: none;">{{customerEmail}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666;">Profil artysty:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #ffffff;">{{artistLink}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666;">Data:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #888;">{{date}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Action Reminder -->
+            <div
+                style="background: rgba(251, 191, 36, 0.1); border-radius: 12px; padding: 16px 20px; margin-top: 24px; border: 1px solid rgba(251, 191, 36, 0.3);">
+                <p style="margin: 0; font-size: 14px; color: #fbbf24;">
+                    ⚡ Pamiętaj, żeby wysłać pliki w ciągu 48 godzin!
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 40px;">
+            <p style="font-size: 11px; color: #444; margin: 0;">
+                Wygenerowano: {{date}}
+            </p>
+        </div>
+
+    </div>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nowe zgłoszenie – Studio Hypnagogia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #222;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .box {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Nowe zgłoszenie ze strony Studio Hypnagogia</h2>
+
+  <p>Poniżej znajdują się pełne dane przesłane przez użytkownika.</p>
+
+  <div class="box">
+    <p><span class="label">Imię:</span> {{name}}</p>
+    <p><span class="label">Email:</span> {{email}}</p>
+    <p><span class="label">Typ studia:</span> {{studioType}}</p>
+    <p><span class="label">Data:</span> {{date}}</p>
+    <p><span class="label">Godzina rozpoczęcia:</span> {{startHour}}</p>
+    <p><span class="label">Długość sesji:</span> {{sessionLength}} min</p>
+
+    {{#comment}}
+    <p><span class="label">Komentarz:</span> {{comment}}</p>
+    {{/comment}}
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Nowe zgłoszenie – Mix/Master</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #fafafa; padding: 20px; }
+    .container { background: #ffffff; padding: 30px; max-width: 600px; margin: auto; border-radius: 8px; }
+    h1 { color: #111; font-size: 22px; margin-bottom: 10px; }
+    p { font-size: 15px; line-height: 1.6; }
+    .label { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Nowe zgłoszenie Mix/Master</h1>
+
+    <p><span class="label">Imię:</span> {{name}}</p>
+    <p><span class="label">Email:</span> {{email}}</p>
+
+    <p>
+      <span class="label">Link do plików:</span><br>
+      <a href="{{link}}" target="_blank">{{link}}</a>
+    </p>
+
+    {{#comment}}
+    <p>
+      <span class="label">Komentarz:</span><br>
+      {{comment}}
+    </p>
+    {{/comment}}
+  </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Potwierdzenie zgłoszenia</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #222;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .box {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Hej, {{name}} Twoje zgłoszenie zostało odebrane</h2>
+
+  <p>
+    Otrzymaliśmy Twój formularz dotyczący sesji
+    <strong>{{studioType}}</strong> w dniu <strong>{{date}}</strong> o godzinie
+    <strong>{{startHour}}</strong> (czas trwania: <strong>{{sessionLength}} minut</strong>).
+  </p>
+
+  <p>
+    Wkrótce sprawdzimy dostępność terminu i skontaktujemy się z Tobą.  
+    Jeśli będziesz potrzebować kontaktu, pisz śmiało na:
+    <strong>hello@kontakt.studio.hypnagogia.pl</strong>
+  </p>
+
+  {{#comment}}
+  <div class="box">
+    <p class="label">Twój komentarz:</p>
+    <p>{{comment}}</p>
+  </div>
+  {{/comment}}
+
+  <p>Dziękujemy za zgłoszenie.</p>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Twoja licencja na beat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--[if mso]>
+    <style type="text/css">
+    body, table, td {font-family: Arial, Helvetica, sans-serif !important;}
+    </style>
+    <![endif]-->
+</head>
+
+<body style="
+    margin:0;
+    padding:0;
+    background-color:#050505;
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color:#ffffff;
+    -webkit-font-smoothing: antialiased;
+">
+
+    <!-- Wrapper -->
+    <div style="
+        width:100%;
+        background-color:#050505;
+        padding:40px 0;
+    ">
+
+        <!-- Outer Container (bg stars simulation via detailed gradients) -->
+        <!-- Pro tip: reliable star patterns in pure CSS for email are tough. 
+         We use multiple small radial gradients to simulate a starfield. -->
+        <div style="
+        max-width:600px;
+        margin:0 auto;
+        border-radius:12px;
+        overflow:hidden;
+        background-color:#090909;
+        background-image:
+            radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+            radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+            radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px),
+            radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 3px);
+        background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+        background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        border: 1px solid #222;
+    ">
+
+            <!-- Inner Content Padding -->
+            <div style="padding:40px 30px;">
+
+                <!-- Header Logo Text -->
+                <div style="text-align:center; margin-bottom:35px;">
+                    <p style="
+                    margin:0;
+                    font-size:24px;
+                    font-weight:700;
+                    letter-spacing:4px;
+                    color:#ffffff;
+                    text-transform:uppercase;
+                ">HYPNA<span style="color:#888;">GOGIA</span></p>
+                    <p style="
+                    margin:4px 0 0;
+                    font-size:10px;
+                    color:#666;
+                    letter-spacing:1.5px;
+                    text-transform:uppercase;
+                ">Professional Audio Studio</p>
+                </div>
+
+                <!-- Greeting -->
+                <h1 style="
+                margin:0 0 15px;
+                font-size:22px;
+                font-weight:300;
+                text-align:center;
+                color:#ffffff;
+            ">
+                    Dziękujemy za zakup
+                </h1>
+
+                <p style="
+                text-align:center; 
+                margin:0 0 30px; 
+                color:#aaa; 
+                font-size:15px; 
+                line-height:1.5;
+            ">
+                    Twoje zamówienie zostało zrealizowane pomyślnie.
+                </p>
+
+                <!-- Card Info -->
+                <div style="
+                background-color:rgba(255,255,255,0.05);
+                border-left: 3px solid #ffffff;
+                padding:20px;
+                margin-bottom:30px;
+                border-radius:4px;
+            ">
+                    <div style="margin-bottom:15px;">
+                        <span
+                            style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#777;">Utwór</span>
+                        <span
+                            style="display:block; font-size:18px; font-weight:600; color:#fff; margin-top:3px;">{{beatTitle}}</span>
+                    </div>
+
+                    <div style="margin-bottom:15px;">
+                        <span
+                            style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#777;">Produkcja</span>
+                        <span style="display:block; font-size:15px; color:#ccc; margin-top:3px;">{{producerName}}</span>
+                    </div>
+
+                    <div>
+                        <span
+                            style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#777;">Typ
+                            licencji</span>
+                        <span
+                            style="display:block; font-size:16px; color:#aaffaa; margin-top:3px;">{{licenseName}}</span>
+                    </div>
+
+                    <div style="margin-top:10px; font-size:11px; color:#555;">
+                        ID Zamówienia: {{orderId}}
+                    </div>
+                </div>
+
+                <!-- Main Message -->
+                <p style="font-size:15px; line-height:1.6; color:#ccc; margin-bottom:15px;">
+                    Cześć <strong>{{customerName}}</strong>!
+                </p>
+                <p style="font-size:15px; line-height:1.6; color:#ccc; margin-bottom:20px;">
+                    Twoja oficjalna licencja znajduje się w <strong>załączniku PDF</strong> do tej wiadomości. Prosimy o
+                    jej pobranie i bezpieczne przechowanie.
+                </p>
+
+                <div style="
+                background-color:#111; 
+                border:1px solid #333; 
+                padding:15px; 
+                font-size:13px; 
+                color:#999; 
+                border-radius:6px; 
+                margin-bottom:30px;
+                text-align: center;
+            ">
+                    ⏳ Pliki audio (WAV / Trackout) zostaną wysłane w osobnej wiadomości w ciągu <strong>48
+                        godzin</strong>.
+                </div>
+
+                <!-- Footer Contact -->
+                <div style="
+                border-top:1px solid #222; 
+                padding-top:20px; 
+                text-align:center; 
+                font-size:12px; 
+                color:#555;
+            ">
+                    <p style="margin:0 0 5px;">Masz pytania? Odpisz na tego maila.</p>
+                    <a href="mailto:hello@kontakt.studio.hypnagogia.pl"
+                        style="color:#777; text-decoration:none;">hello@kontakt.studio.hypnagogia.pl</a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Branding -->
+        <div style="text-align:center; padding-top:20px; font-size:11px; color:#444;">
+            &copy; Studio Hypnagogia. All rights reserved.
+        </div>
+
+    </div>
+</body>
+
+</html>
+FROM node:18-alpine
+WORKDIR /app
+COPY package.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const handleStudioForm = require('./functions/StudioForm');
+const handleMixMasterForm = require('./functions/MixMasterForm');
+const { handleBeatsCheckout, handleBeatsWebhook, validatePromo } = require('./functions/BeatsPurchase');
+
+const cron = require("node-cron");
+const fs = require("fs");
+const path = require("path");
+const updateBeats = require("./functions/updateBeats");
+
+const app = express();
+app.set('trust proxy', 1);
+app.disable("x-powered-by");
+const PORT = 3000;
+
+// Rate limiter – max 20 requestów na minutę
+const limiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// ============================================
+// STRIPE WEBHOOK - MUST BE BEFORE express.json()
+// ============================================
+app.post('/api/beats/webhook',
+    express.raw({ type: 'application/json' }),
+    handleBeatsWebhook
+);
+
+// Middleware
+app.use(helmet());
+app.use(cors({
+    origin: ["https://studio.hypnagogia.pl"], // dopuszczalne domeny
+    methods: ["POST", "GET"],
+}));
+app.use(express.json({ limit: '200kb' })); // ograniczenie payloadu
+app.use(express.urlencoded({ extended: true }));
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+        return res.status(400).json({
+            status: "error",
+            message: "Nieprawidłowy format danych."
+        });
+    }
+    next(err);
+});
+app.use(limiter);
+
+// Endpoint do zgłoszeń do studia
+app.post('/api/studio', async (req, res) => {
+    try {
+        await handleStudioForm(req, res);
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Wystąpił nieoczekiwany błąd serwera.',
+        });
+    }
+});
+
+// Endpoint do zgłoszeń Mix/Master
+app.post('/api/mixmaster', async (req, res) => {
+    try {
+        await handleMixMasterForm(req, res);
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Wystąpił nieoczekiwany błąd serwera.',
+        });
+    }
+});
+
+// ============================================
+// BEATS API
+// ============================================
+
+app.get("/api/beats", (req, res) => {
+    try {
+        const beats = fs.readFileSync(path.join(__dirname, "data/beats.json"), "utf8");
+        res.json(JSON.parse(beats));
+    } catch (err) {
+        res.status(500).json({ status: "error", message: "Błąd wczytywania beatów" });
+    }
+});
+
+// Create checkout session for beat purchase
+app.post('/api/beats/checkout', async (req, res) => {
+    try {
+        await handleBeatsCheckout(req, res);
+    } catch (err) {
+        console.error('Checkout error:', err);
+        res.status(500).json({
+            status: 'error',
+            message: 'Wystąpił nieoczekiwany błąd serwera.',
+        });
+    }
+});
+
+// Validate promo code
+app.post('/api/beats/validate-promo', async (req, res) => {
+    try {
+        await validatePromo(req, res);
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Wystąpił nieoczekiwany błąd serwera.',
+        });
+    }
+});
+
+// Obsługa nieistniejących endpointów
+app.use((req, res) => {
+    res.status(404).json({ status: 'error', message: 'Endpoint nie istnieje.' });
+});
+
+app.use((err, req, res, next) => {
+    console.error("Global Server Error:", err);
+    res.status(500).json({
+        status: 'error',
+        message: 'Wystąpił nieoczekiwany błąd serwera.',
+    });
+});
+
+// Uruchomienie serwera
+app.listen(PORT, () => {
+    console.log(`Backend działa na porcie ${PORT}`);
+});
+
+// Cron — codziennie o 18:00
+cron.schedule("0 18 * * *", () => {
+    console.log("CRON: aktualizacja listy beatów...");
+    updateBeats();
+});
+
+// Jednorazowe pobranie przy starcie
+updateBeats();
+MAILGUN_API_KEY=
+MAILGUN_DOMAIN=kontakt.studio.hypnagogia.pl
+YT_API_KEY=
+YT_CHANNEL_ID=
+ADMIN_EMAIL=kontakt.hypnagogia@gmail.com
+PORT=3000
+# Stripe
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+STRIPE_SUCCESS_URL=https://studio.hypnagogia.pl/purchase-success.html
+STRIPE_CANCEL_URL=https://studio.hypnagogia.pl/#beats
+
+# Producer name (used in licenses)
+PRODUCER_NAME=HYPNAGOGIA

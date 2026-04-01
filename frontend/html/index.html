@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HYPNAGOGIA STUDIO</title>
+  <meta name="description" content="HYPNAGOGIA STUDIO - ">
+
+  <meta name="google-site-verification" content="xngyljEomMwuV5NEWFdt1h_z254LTjp3U0Ms7oxrmpg" />
+
+  <!-- Basic SEO -->
+  <meta name="theme-color" content="#000000">
+  <link rel="canonical" href="/">
+
+  <!-- Site icon -->
+  <link rel="icon" href="images/hypnagogic-state.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/hypnagogic-state.jpg">
+
+  <!-- Preload hero image for faster LCP -->
+  <link rel="preload" as="image" href="images/banner1.webp" fetchpriority="high">
+
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicRecordingStudio",
+  "name": "Hypnagogia Studio",
+  "image": "https://studio.hypnagogia.pl/images/hypnagogic-state.jpg",
+  "url": "https://studio.hypnagogia.pl/",
+  "telephone": "", 
+  "priceRange": "120 PLN - 888 PLN",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Katowice",
+    "addressCountry": "PL"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "00:00",
+    "closes": "23:59"
+  },
+  "sameAs": [
+    "https://www.instagram.com/prod.explore",
+  ]
+}
+</script>
+
+</head>
+
+<body>
+  <a class="skip-link" href="#main">ENTER</a>
+
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <button id="burger" class="burger" aria-label="Otwórz menu" aria-controls="primary-nav" aria-expanded="false">
+        <span class="burger__line" aria-hidden="true"></span>
+        <span class="burger__line" aria-hidden="true"></span>
+        <span class="burger__line" aria-hidden="true"></span>
+      </button>
+
+      <div class="brand" aria-label="Nazwa strony">
+        <b1>HYPNAGOGIA</b1> STUDIO
+      </div>
+
+      <nav id="primary-nav" class="nav" aria-label="Główne menu">
+        <ul class="nav__list">
+          <li><a href="#home" class="nav__link"><span class="lang-pl">HOME</span><span class="lang-en"
+                style="display:none;">HOME</span></a></li>
+          <li><a href="#studio" class="nav__link"><span class="lang-pl">STUDIO</span><span class="lang-en"
+                style="display:none;">STUDIO</span></a></li>
+          <li><a href="#mixmaster" class="nav__link"><span class="lang-pl">MIX/MASTERING</span><span class="lang-en"
+                style="display:none;">MIX/MASTERING</span></a></li>
+          <li><a href="#beats" class="nav__link"><span class="lang-pl">BEATY</span><span class="lang-en"
+                style="display:none;">BEATS</span></a></li>
+        </ul>
+      </nav>
+
+      <!-- You need flag images for real flags, e.g.: images/flag-pl.png and images/flag-us.png -->
+      <button id="lang-toggle" class="lang-toggle" aria-label="Switch language">
+        <span class="lang-flag flag-pl" style="display:inline-block;"></span>
+        <span class="lang-flag flag-us" style="display:none;"></span>
+      </button>
+      <div class="topbar__spacer"></div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- Sekcje strony -->
+    <section id="home" class="section" aria-label="HOME">
+      <div class="container">
+        <h2 class="section__title"><span class="lang-pl">HOME</span><span class="lang-en"
+            style="display:none;">HOME</span></h2>
+        <aside class="section-note section-note--full" aria-label="Informacja o sekcji HOME">
+          <h3 class="section-note__title"><span class="lang-pl">Witaj w studio hypnagogia</span><span class="lang-en"
+              style="display:none;">Welcome to Hypnagogia Studio</span></h3>
+          <p class="section-note__text lang-pl">To strefa pomiędzy wizją a realizacją — gdzie idee przekształcają się w
+            precyzyjnie wyselekcjonowane brzmienie, dopracowane przez profesjonalnych producentów.</p>
+          <p class="section-note__text lang-en" style="display:none;">This is the zone between vision and realization —
+            where ideas are transformed into finely selected sound, perfected by professional producers.</p>
+          <p id="note" class="section-note lang-pl">Poniżej znajdziesz pełną ofertę naszego studia!</p>
+          <p id="note-en" class="section-note lang-en" style="display:none;">Below you will find the full offer of our
+            studio!</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="studio" class="section" aria-label="STUDIO">
+      <div class="container">
+        <h2 class="section__title"><span class="lang-pl">STUDIO</span><span class="lang-en"
+            style="display:none;">STUDIO</span></h2>
+
+        <div class="studio-grid">
+          <div class="studio-card" id="stationary">
+            <h3 class="studio-card__title"><span class="lang-pl">Stacjonarne</span><span class="lang-en"
+                style="display:none;">Stationary</span></h3>
+            <p class="studio-description__text lang-pl">Realizacja w profesjonalnym studio nagraniowym z opieką
+              doświadczonego producenta.</p>
+            <p class="studio-description__text lang-en" style="display:none;">Recording at a professional studio with
+              the supervision of an experienced producer.</p>
+            <p class="studio-note lang-pl">*Na chwilę obecną z powodu problemów z lokalem realizacje stacjonarne
+              odbywają się w studio RATAPLAN w okolicy Spodka.</p>
+            <p class="studio-note lang-en" style="display:none;">*Currently, due to venue issues, stationary sessions
+              take place at RATAPLAN studio near Spodek.</p>
+
+            <div class="pricing-section">
+              <h4 class="pricing-title"><span class="lang-pl">Cennik</span><span class="lang-en"
+                  style="display:none;">Price List</span></h4>
+              <ul class="pricing-list">
+                <li>1h - <span class="price-pl">120zł</span><span class="price-us" style="display:none;">$30</span></li>
+                <li>2h - <span class="price-pl">200zł</span><span class="price-us" style="display:none;">$50</span></li>
+                <li>3h - <span class="price-pl">280zł</span><span class="price-us" style="display:none;">$70</span></li>
+                <li>4h - <span class="price-pl">360zł</span><span class="price-us" style="display:none;">$90</span></li>
+                <li>5h - <span class="price-pl">440zł</span><span class="price-us" style="display:none;">$110</span>
+                </li>
+                <li>6h - <span class="price-pl">520zł</span><span class="price-us" style="display:none;">$140</span>
+                </li>
+                <li>7h - <span class="price-pl">600zł</span><span class="price-us" style="display:none;">$150</span>
+                </li>
+                <li>8h - <span class="price-pl">680zł</span><span class="price-us" style="display:none;">$180</span>
+                </li>
+              </ul>
+            </div>
+
+            <button class="toggle-equipment" aria-expanded="false" data-target="equip-stationary"><span
+                class="lang-pl">Pokaż sprzęt</span><span class="lang-en" style="display:none;">Show
+                equipment</span></button>
+            <ul id="equip-stationary" class="equipment-list equipment-collapsible">
+              <li>Perkusja Pearl Target TGC625</li>
+              <li>Głowa basowa WARWICK 3,2 PRO</li>
+              <li>Kolumna basowa ASHDOWN 115 300W</li>
+              <li>Kolumna gitarowa MARSHALL 212</li>
+              <li>Wzmacniacz gitarowy CRATE</li>
+              <li>Combo gitarowe MARSHALL VAVLESTATE 212</li>
+              <li>Kolumna głośnikowa aktywna STAGG SMS-15</li>
+              <li>Kolumna głośnikowa aktywna HK 12'</li>
+              <li>Mixer analogowy BEHRINGER</li>
+              <li>Mikrofon SHURE SM58</li>
+            </ul>
+          </div>
+
+          <div class="studio-card" id="mobile">
+            <h3 class="studio-card__title"><span class="lang-pl">Wyjazdy</span><span class="lang-en"
+                style="display:none;">Mobile</span></h3>
+            <p class="studio-description__text lang-pl">Mobilne studio nagraniowe, dojeżdżamy do klienta (Katowice
+              centrum + 5km gratis). Realizacje w komfortowych warunkach akustycznych.</p>
+            <p class="studio-description__text lang-en" style="display:none;">Mobile recording studio, we come to you
+              (Katowice center +5km free). Sessions in comfortable acoustic conditions.</p>
+
+            <div class="pricing-section">
+              <h4 class="pricing-title"><span class="lang-pl">Cennik (wyjazd)</span><span class="lang-en"
+                  style="display:none;">Price List (mobile)</span></h4>
+              <ul class="pricing-list">
+                <li>2h - <span class="price-pl">300zł</span><span class="price-us" style="display:none;">$80</span></li>
+                <li>3h - <span class="price-pl">400zł</span><span class="price-us" style="display:none;">$110</span>
+                </li>
+                <li>4h - <span class="price-pl">500zł</span><span class="price-us" style="display:none;">$130</span>
+                </li>
+                <li>5h - <span class="price-pl">600zł</span><span class="price-us" style="display:none;">$150</span>
+                </li>
+                <li>6h - <span class="price-pl">650zł</span><span class="price-us" style="display:none;">$170</span>
+                </li>
+                <li>7h - <span class="price-pl">700zł</span><span class="price-us" style="display:none;">$180</span>
+                </li>
+                <li>8h - <span class="price-pl">800zł</span><span class="price-us" style="display:none;">$210</span>
+                </li>
+              </ul>
+            </div>
+
+            <button class="toggle-equipment" aria-expanded="false" data-target="equip-mobile"><span
+                class="lang-pl">Pokaż sprzęt</span><span class="lang-en" style="display:none;">Show
+                equipment</span></button>
+            <ul id="equip-mobile" class="equipment-list equipment-collapsible">
+              <li>Komputer</li>
+              <li>Focusrite Scarlet Solo 3rd gen</li>
+              <li>Mikrofon MXL 990</li>
+              <li>Słuchawki studyjne</li>
+              <li>Klatka akustyczna + panel</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="studio-cta-container">
+          <aside class="section-note section-note--center" aria-label="Przycisk do formularza zgłoszeniowego">
+            <h3 class="section-note__title"><span class="lang-pl">ZAPISZ SIĘ</span><span class="lang-en"
+                style="display:none;">SIGN UP</span></h3>
+            <p class="section-note__text lang-pl">Skorzystaj z naszych usług studia nagraniowego</p>
+            <p class="section-note__text lang-en" style="display:none;">Take advantage of our recording studio services
+            </p>
+            <button class="studio-cta-btn" onclick="openForm('studio')">
+              <span class="lang-pl">ZGŁOŚ SIĘ DO STUDIA</span><span class="lang-en" style="display:none;">APPLY FOR THE
+                STUDIO</span>
+            </button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="mixmaster" class="section" aria-label="MIX/MASTERING">
+      <div class="container">
+        <h2 class="section__title"><span class="lang-pl">MIX/MASTERING</span><span class="lang-en"
+            style="display:none;">MIX/MASTERING</span></h2>
+        <div class="section__grid section__grid--note-right">
+          <div class="section__main">
+            <p id="section-note__title"><span class="lang-pl">Portfolio:</span><span class="lang-en"
+                style="display:none;">Portfolio:</span></p>
+
+            <div class="ab-player" role="group" aria-label="Porównanie Before/After">
+              <div class="ab-track-select">
+                <select id="track-selector" class="ab-track-selector" aria-label="Wybierz utwór">
+                  <option value="">Ładowanie utworów...</option>
+                </select>
+              </div>
+
+              <!-- SoundCloud Embed (shown when SoundCloud track is selected) -->
+              <div id="soundcloud-container" class="soundcloud-container" style="display: none;">
+                <iframe id="soundcloud-frame" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay"
+                  src=""></iframe>
+              </div>
+
+              <div class="ab-player__visual">
+                <canvas id="ab-visualizer" width="1024" height="200" aria-hidden="true"></canvas>
+                <div class="ab-glow" aria-hidden="true"></div>
+
+                <iframe id="spotify-frame" style="display:none; width: 100%; height: 100%; border:none;" src=""
+                  allow="encrypted-media"></iframe>
+              </div>
+              <div class="ab-player__controls">
+                <button class="ab-btn" id="ab-play" aria-label="Odtwórz / Pauza">
+                  <svg class="ab-icon" id="ab-icon" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"
+                    focusable="false">
+                    <path d="M8 5l12 7-12 7z" fill="currentColor"></path>
+                  </svg>
+                  <span class="ab-btn__label">Play</span>
+                </button>
+                <div class="ab-crossfade">
+                  <span class="ab-crossfade__label">Before</span>
+                  <input type="range" id="ab-fader" class="ab-crossfade__slider" min="0" max="100" value="0"
+                    aria-label="Przesuń aby porównać Before / After">
+                  <span class="ab-crossfade__label">After</span>
+                </div>
+              </div>
+
+              <!-- Hidden audio elements serve as sources -->
+              <audio id="ab-before" preload="metadata" playsinline></audio>
+              <audio id="ab-after" preload="metadata" playsinline></audio>
+            </div>
+          </div>
+          <aside class="section-note section-note--right" aria-label="Informacja o sekcji MIX/MASTERING">
+            <h3 class="section-note__title"><span class="lang-pl">Oferta:</span><span class="lang-en"
+                style="display:none;">Offer:</span></h3>
+            <p>
+              <b3><span class="price-pl">250</span><span class="price-us" style="display:none;">$70</span></b3>
+              <b2><span class="price-pl">PLN</span><span class="price-us" style="display:none;">USD</span></b2> - <span
+                class="lang-pl">cena wokół której oscylujemy.</span><span class="lang-en" style="display:none;">starting
+                price.</span>
+            </p>
+            <p><span class="lang-pl">Zniżki:</span><span class="lang-en" style="display:none;">Discounts:</span></p>
+            <p>
+              <b2>-20%</b2> - <span class="lang-pl">kawałek nagranu u nas.</span><span class="lang-en"
+                style="display:none;">track recorded at our studio.</span>
+            </p>
+            <p>
+              <b2>-10%</b2> - <span class="lang-pl">kawałek nagrany do naszego instrumentala.</span><span
+                class="lang-en" style="display:none;">track recorded to our instrumental.</span>
+            </p>
+            <p class="section-note__text lang-pl">Usługa m/m w naszym studio jest wyceniana w zależności od poziomu
+              złożoności, ilości scieżek oraz tego czy był on nagrany u nas lub do naszego instrumentala.</p>
+            <p class="section-note__text lang-en" style="display:none;">Mix/mastering service in our studio is quoted
+              based on the complexity, number of tracks, and whether it was recorded at our studio or to our
+              instrumental.</p>
+            <button class="studio-cta-btn" onclick="openForm('mixmaster')">
+              <span class="lang-pl">Uzyskaj wycenę!</span><span class="lang-en" style="display:none;">Get a
+                quote!</span>
+            </button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="beats" class="section" aria-label="BEATY">
+      <div class="container">
+        <h2 class="section__title"><span class="lang-pl">BEATY</span><span class="lang-en"
+            style="display:none;">BEATS</span></h2>
+        <div class="section__grid section__grid--note-left">
+          <aside class="section-note section-note--left" aria-label="Informacja o sekcji BEATY">
+            <p class="section-note__text"><span class="lang-pl">
+                <b2>Ceny licencji:</b2><br>
+                • Lease Basic: <b3>49</b3> PLN<br>
+                • Lease Premium: <b3>179</b3> PLN<br>
+                • Exclusive: <b3>888</b3> PLN
+              </span><span class="lang-en" style="display:none;">
+                <b2>License prices:</b2><br>
+                • Lease Basic: <b3>$12</b3><br>
+                • Lease Premium: <b3>$45</b3><br>
+                • Exclusive: <b3>$220</b3>
+              </span></p>
+            <p class="section-note__text"><span class="lang-pl">Kliknij 🛒 przy beacie żeby przejść do
+                zakupu!</span><span class="lang-en" style="display:none;">Click 🛒 on a beat to purchase!</span></p>
+          </aside>
+          <div class="section__main">
+            <div id="beat-catalog"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Formularz zgłoszeniowy -->
+  <div id="form-modal" class="form-modal" style="display: none;">
+    <div class="form-modal__overlay" onclick="closeForm()"></div>
+    <div class="form-modal__content">
+      <button class="form-modal__close" onclick="closeForm()" aria-label="Zamknij formularz">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+      <div class="form-container">
+        <h2 id="form-title" class="form-title">Formularz zgłoszeniowy</h2>
+
+        <!-- Studio Form -->
+        <!-- Studio Form -->
+        <form id="studio-form" class="application-form" style="display: none;">
+          <div class="form-group">
+            <label for="studio-name" class="form-label">Jak mamy się do ciebie zwracać?</label>
+            <input type="text" id="studio-name" name="name" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="studio-email" class="form-label">Email</label>
+            <input type="email" id="studio-email" name="email" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="studio-type" class="form-label">Rodzaj studia</label>
+            <select id="studio-type" name="studioType" class="form-select" required>
+              <option value="stationary">Stacjonarne</option>
+              <option value="mobile">Mobilne</option>
+            </select>
+          </div>
+
+          <div class="form-group" id="address-group" style="display: none;">
+            <label for="studio-address" class="form-label">Adres wizyty: </label>
+            <input type="text" id="studio-address" name="address" class="form-input"
+              placeholder="Wprowadź adres wizyty">
+            <p class="studio-note">*Powyżej 5km od centrum katowic naliczamy opłatę za dojazd.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="studio-date" class="form-label">Data</label>
+            <input type="date" id="studio-date" name="date" class="form-input" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="studio-start" class="form-label">Godzina rozpoczęcia</label>
+              <input type="time" id="studio-start" name="startHour" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+              <label for="studio-length" class="form-label">Długość sesji</label>
+              <select id="studio-length" name="sessionLength" class="form-select" required>
+                <option value="120">2 godziny</option>
+                <option value="180">3 godziny</option>
+                <option value="240">4 godziny</option>
+                <option value="300">5 godzin</option>
+                <option value="360">6 godzin</option>
+                <option value="420">7 godzin</option>
+                <option value="480">8 godzin</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="studio-comment" class="form-label">Komentarz</label>
+            <textarea id="studio-comment" name="comment" class="form-textarea" rows="4"
+              placeholder="Dodatkowe informacje..."></textarea>
+          </div>
+
+          <button type="submit" class="form-submit">WYŚLIJ ZGŁOSZENIE</button>
+        </form>
+
+        <!-- Mix/Mastering Form -->
+        <form id="mixmaster-form" class="application-form" style="display: none;">
+          <div class="form-group">
+            <label for="mixmaster-name" class="form-label">Jak mamy się do ciebie zwracać?</label>
+            <input type="text" id="mixmaster-name" name="name" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="mixmaster-email" class="form-label">Email</label>
+            <input type="email" id="mixmaster-email" name="email" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="mixmaster-file" class="form-label">Pliki do mixu/masteringu</label>
+            <input type="url" id="mixmaster-link" name="link" class="form-input"
+              placeholder="Wklej link do swoich plików (np. Google Drive, WeTransfer)" required>
+          </div>
+
+          <div class="form-group">
+            <label for="mixmaster-comment" class="form-label">Komentarz</label>
+            <textarea id="mixmaster-comment" name="comment" class="form-textarea" rows="4"
+              placeholder="Dodatkowe informacje..."></textarea>
+          </div>
+
+          <button type="submit" class="form-submit">WYŚLIJ ZGŁOSZENIE</button>
+        </form>
+
+        <!-- Beaty Purchase Form -->
+        <form id="beaty-form" class="application-form" style="display: none;">
+          <!-- Selected Beat Info -->
+          <div class="form-group beat-selection-info">
+            <div id="selected-beat-preview" class="selected-beat-preview">
+              <span class="lang-pl">Wybierz beat z katalogu aby kontynuować</span>
+              <span class="lang-en" style="display:none;">Select a beat from catalog to continue</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="beaty-name" class="form-label">
+              <span class="lang-pl">Imię i nazwisko (do licencji)</span>
+              <span class="lang-en" style="display:none;">Full name (for license)</span>
+            </label>
+            <input type="text" id="beaty-name" name="name" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="beaty-email" class="form-label">Email</label>
+            <input type="email" id="beaty-email" name="email" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="beaty-license" class="form-label">
+              <span class="lang-pl">Typ licencji</span>
+              <span class="lang-en" style="display:none;">License type</span>
+            </label>
+            <select id="beaty-license" name="licenseType" class="form-select" required>
+              <option value="lease_basic" data-pln="49" data-usd="12">Lease Basic - 49 PLN</option>
+              <option value="lease_premium" data-pln="179" data-usd="45">Lease Premium - 179 PLN</option>
+              <option value="exclusive" data-pln="888" data-usd="220">Exclusive - 888 PLN</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="beaty-artist-link" class="form-label">
+              <span class="lang-pl">Link do profilu artysty (opcjonalnie)</span>
+              <span class="lang-en" style="display:none;">Artist profile link (optional)</span>
+            </label>
+            <input type="url" id="beaty-artist-link" name="artistLink" class="form-input"
+              placeholder="https://spotify.com/artist/...">
+          </div>
+
+          <div class="form-group">
+            <label for="beaty-promo" class="form-label">
+              <span class="lang-pl">Kod promocyjny</span>
+              <span class="lang-en" style="display:none;">Promo code</span>
+            </label>
+            <div class="promo-input-group">
+              <input type="text" id="beaty-promo" name="promoCode" class="form-input" placeholder="PROMO CODE">
+              <button type="button" id="validate-promo-btn" class="promo-validate-btn">
+                <span class="lang-pl">Sprawdź</span>
+                <span class="lang-en" style="display:none;">Check</span>
+              </button>
+            </div>
+            <div id="promo-feedback" class="promo-feedback"></div>
+          </div>
+
+          <!-- Price Summary -->
+          <div class="form-group price-summary">
+            <div class="price-row">
+              <span><span class="lang-pl">Cena:</span><span class="lang-en" style="display:none;">Price:</span></span>
+              <span id="beat-original-price">49 PLN</span>
+            </div>
+            <div class="price-row discount-row" id="discount-row" style="display: none;">
+              <span><span class="lang-pl">Rabat:</span><span class="lang-en"
+                  style="display:none;">Discount:</span></span>
+              <span id="beat-discount">-0 PLN</span>
+            </div>
+            <div class="price-row total-row">
+              <span><span class="lang-pl">Do zapłaty:</span><span class="lang-en"
+                  style="display:none;">Total:</span></span>
+              <span id="beat-final-price">49 PLN</span>
+            </div>
+          </div>
+
+          <!-- License Info -->
+          <div class="license-info" id="license-info">
+            <p class="license-info__title">Lease Basic</p>
+            <ul class="license-info__list">
+              <li>50,000 streams</li>
+              <li>2,500 sales</li>
+              <li>1 music video</li>
+              <li><span class="lang-pl">Brak radia</span><span class="lang-en" style="display:none;">No radio</span>
+              </li>
+            </ul>
+          </div>
+
+          <input type="hidden" id="beaty-beat-id" name="beatId">
+
+          <button type="submit" class="form-submit form-submit--purchase">
+            <span class="lang-pl">PRZEJDŹ DO PŁATNOŚCI</span>
+            <span class="lang-en" style="display:none;">PROCEED TO PAYMENT</span>
+          </button>
+
+          <p class="form-disclaimer">
+            <span class="lang-pl">Płatność obsługiwana przez Stripe. Akceptujemy karty, BLIK, Przelewy24.</span>
+            <span class="lang-en" style="display:none;">Payment powered by Stripe. We accept cards, BLIK,
+              Przelewy24.</span>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" role="contentinfo">
+    <p>© <span id="year"></span> HYPNAGOGIA STUDIO</p>
+  </footer>
+  <div id="yt-embed-player" style="width:1px;height:1px;position:fixed;left:-9999px;top:-9999px;overflow:hidden;"></div>
+</body>
+
+</html>

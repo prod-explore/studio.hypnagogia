@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nowa sprzedaż beatu</title>
+</head>
+
+<body
+    style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0a0a0a; color: #ffffff;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-size: 28px; margin: 0; color: #22c55e;">
+                💰 Nowa sprzedaż!
+            </h1>
+        </div>
+
+        <!-- Main Content -->
+        <div
+            style="background: linear-gradient(145deg, #1a1a2e, #16213e); border-radius: 16px; padding: 32px; border: 1px solid rgba(34, 197, 94, 0.3);">
+
+            <!-- Order Info -->
+            <div style="margin-bottom: 24px;">
+                <p style="font-size: 12px; color: #666; margin: 0 0 4px 0;">Order ID</p>
+                <p style="font-size: 14px; color: #888; margin: 0; font-family: monospace;">{{orderId}}</p>
+            </div>
+
+            <!-- Beat & License -->
+            <div
+                style="background: rgba(34, 197, 94, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 24px; border-left: 4px solid #22c55e;">
+                <p style="margin: 0 0 8px 0; font-size: 14px; color: #888;">Beat:</p>
+                <p style="margin: 0; font-size: 22px; font-weight: bold; color: #ffffff;">{{beatTitle}}</p>
+                <p style="margin: 12px 0 0 0; font-size: 16px; color: #22c55e;">{{licenseName}}</p>
+            </div>
+
+            <!-- Price -->
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px;">
+                <div>
+                    <p style="margin: 0; font-size: 14px; color: #888;">Cena oryginalna:</p>
+                    <p style="margin: 4px 0 0 0; font-size: 16px; color: #aaa; text-decoration: line-through;">
+                        {{originalPrice}} PLN</p>
+                </div>
+                <div style="text-align: right;">
+                    <p style="margin: 0; font-size: 14px; color: #888;">Zapłacono:</p>
+                    <p style="margin: 4px 0 0 0; font-size: 24px; font-weight: bold; color: #22c55e;">{{finalPrice}} PLN
+                    </p>
+                </div>
+            </div>
+
+            <!-- Promo Code -->
+            <div style="margin-bottom: 24px;">
+                <p style="font-size: 12px; color: #666; margin: 0 0 4px 0;">Kod promocyjny:</p>
+                <p style="font-size: 14px; color: #a855f7; margin: 0;">{{promoCode}}</p>
+            </div>
+
+            <!-- Customer Info -->
+            <div style="border-top: 1px solid #333; padding-top: 24px;">
+                <p style="font-size: 14px; color: #888; margin: 0 0 16px 0;">📧 Dane klienta:</p>
+
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666; width: 100px;">Imię:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #ffffff;">{{customerName}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666;">Email:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #ffffff;">
+                            <a href="mailto:{{customerEmail}}"
+                                style="color: #60a5fa; text-decoration: none;">{{customerEmail}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666;">Profil artysty:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #ffffff;">{{artistLink}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; font-size: 13px; color: #666;">Data:</td>
+                        <td style="padding: 8px 0; font-size: 14px; color: #888;">{{date}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Action Reminder -->
+            <div
+                style="background: rgba(251, 191, 36, 0.1); border-radius: 12px; padding: 16px 20px; margin-top: 24px; border: 1px solid rgba(251, 191, 36, 0.3);">
+                <p style="margin: 0; font-size: 14px; color: #fbbf24;">
+                    ⚡ Pamiętaj, żeby wysłać pliki w ciągu 48 godzin!
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 40px;">
+            <p style="font-size: 11px; color: #444; margin: 0;">
+                Wygenerowano: {{date}}
+            </p>
+        </div>
+
+    </div>
+</body>
+
+</html>

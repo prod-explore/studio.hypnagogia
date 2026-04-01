@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Potwierdzenie zgłoszenia – Mix/Master</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; }
+    .container { background: #ffffff; padding: 30px; max-width: 600px; margin: auto; border-radius: 8px; }
+    h1 { color: #111; font-size: 22px; }
+    p { font-size: 15px; line-height: 1.6; }
+    .footer { margin-top: 25px; font-size: 13px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cześć {{name}}!</h1>
+
+    <p>
+      Dziękujemy za przesłanie zgłoszenia dotyczącego <strong>mixu/masteringu</strong>.
+      Właśnie otrzymaliśmy Twoje materiały i rozpoczniemy ich weryfikację.
+    </p>
+
+    <p>
+      W ciągu najbliższego czasu przygotujemy dla Ciebie <strong>wycenę projektu</strong> oraz
+      przekażemy dalsze informacje dotyczące realizacji.
+    </p>
+
+    <p>
+      <strong>Link do plików:</strong><br>
+      <a href="{{link}}" target="_blank">{{link}}</a>
+    </p>
+
+    {{#comment}}
+    <p>
+      <strong>Twój komentarz:</strong><br>
+      {{comment}}
+    </p>
+    {{/comment}}
+
+    <div class="footer">
+      W razie pytań prosimy o kontakt na adres:<br>
+      <strong>hello@kontakt.studio.hypnagogia.pl</strong><br><br>
+      Pozdrawiamy,<br>
+      Hypnagogia Studio
+    </div>
+  </div>
+</body>
+</html>
