@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl">
+<html lang="us">
 
 <head>
   <meta charset="utf-8">
@@ -30,7 +30,6 @@
   "name": "Hypnagogia Studio",
   "image": "https://studio.hypnagogia.pl/images/hypnagogic-state.jpg",
   "url": "https://studio.hypnagogia.pl/",
-  "telephone": "", 
   "priceRange": "120 PLN - 888 PLN",
   "address": {
     "@type": "PostalAddress",
@@ -52,7 +51,7 @@
     "closes": "23:59"
   },
   "sameAs": [
-    "https://www.instagram.com/prod.explore",
+    "https://www.instagram.com/prod.explore"
   ]
 }
 </script>
@@ -116,6 +115,7 @@
       </div>
     </section>
 
+    <!-- 
     <section id="studio" class="section" aria-label="STUDIO">
       <div class="container">
         <h2 class="section__title"><span class="lang-pl">STUDIO</span><span class="lang-en"
@@ -226,6 +226,7 @@
         </div>
       </div>
     </section>
+    -->
 
     <section id="mixmaster" class="section" aria-label="MIX/MASTERING">
       <div class="container">
@@ -415,7 +416,10 @@
         <!-- Mix/Mastering Form -->
         <form id="mixmaster-form" class="application-form" style="display: none;">
           <div class="form-group">
-            <label for="mixmaster-name" class="form-label">Jak mamy się do ciebie zwracać?</label>
+            <label for="mixmaster-name" class="form-label">
+              <span class="lang-pl">Jak mamy się do ciebie zwracać?</span>
+              <span class="lang-en" style="display:none;">How should we call you?</span>
+            </label>
             <input type="text" id="mixmaster-name" name="name" class="form-input" required>
           </div>
 
@@ -425,18 +429,27 @@
           </div>
 
           <div class="form-group">
-            <label for="mixmaster-file" class="form-label">Pliki do mixu/masteringu</label>
+            <label for="mixmaster-file" class="form-label">
+              <span class="lang-pl">Pliki do mixu/masteringu</span>
+              <span class="lang-en" style="display:none;">Files for mix/mastering</span>
+            </label>
             <input type="url" id="mixmaster-link" name="link" class="form-input"
-              placeholder="Wklej link do swoich plików (np. Google Drive, WeTransfer)" required>
+              placeholder="Google Drive, WeTransfer..." required>
           </div>
 
           <div class="form-group">
-            <label for="mixmaster-comment" class="form-label">Komentarz</label>
+            <label for="mixmaster-comment" class="form-label">
+              <span class="lang-pl">Komentarz</span>
+              <span class="lang-en" style="display:none;">Comment</span>
+            </label>
             <textarea id="mixmaster-comment" name="comment" class="form-textarea" rows="4"
-              placeholder="Dodatkowe informacje..."></textarea>
+              placeholder="..."></textarea>
           </div>
 
-          <button type="submit" class="form-submit">WYŚLIJ ZGŁOSZENIE</button>
+          <button type="submit" class="form-submit">
+            <span class="lang-pl">WYŚLIJ ZGŁOSZENIE</span>
+            <span class="lang-en" style="display:none;">SUBMIT APPLICATION</span>
+          </button>
         </form>
 
         <!-- Beaty Purchase Form -->
@@ -541,6 +554,66 @@
               Przelewy24.</span>
           </p>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Legal Side Tabs -->
+  <div class="legal-sidebar">
+    <button class="legal-tab" onclick="openLegal('terms')" aria-label="Terms of Service">
+      <span class="lang-pl">REGULAMIN</span><span class="lang-en" style="display:none;">TERMS</span>
+    </button>
+    <button class="legal-tab" onclick="openLegal('privacy')" aria-label="Privacy Policy">
+      <span class="lang-pl">PRYWATNOŚĆ</span><span class="lang-en" style="display:none;">PRIVACY</span>
+    </button>
+  </div>
+
+  <!-- Legal Modal -->
+  <div id="legal-modal" class="form-modal" style="display: none;">
+    <div class="form-modal__overlay" onclick="closeLegal()"></div>
+    <div class="form-modal__content legal-modal-content">
+      <button class="form-modal__close" onclick="closeLegal()" aria-label="Zamknij">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <div class="form-container legal-container">
+
+        <!-- TERMS OF SERVICE -->
+        <div id="legal-doc-terms" style="display:none;">
+          <h2 class="form-title">
+            <span class="lang-pl">Regulamin Serwisu</span>
+            <span class="lang-en" style="display:none;">Terms of Service</span>
+          </h2>
+          <div class="legal-text">
+            <h3><span class="lang-pl">1. Przedmiot Usług</span><span class="lang-en" style="display:none;">1. Scope of Services</span></h3>
+            <p><span class="lang-pl">Studio oferuje sprzedaż cyfrowych licencji na podkłady muzyczne (Beaty) oraz usługi z zakresu inżynierii dźwięku (Mix/Mastering).</span><span class="lang-en" style="display:none;">The studio offers the sale of digital licenses for instrumentals (Beats) and sound engineering services (Mix/Mastering).</span></p>
+
+            <h3><span class="lang-pl">2. Licencje na Beaty</span><span class="lang-en" style="display:none;">2. Beat Licensing</span></h3>
+            <p><span class="lang-pl">Kupując licencję Lease, użytkownik nie nabywa pełni praw autorskich do kompozycji (właścicielem pozostaje Hypnagogia Studio). Wymagane jest oznaczenie twórcy w metadanych (Prod. by prod.explore). Po przekroczeniu określonego typu licencji limitu streamów (np. 50,000 dla Basic), licencja musi zostać odnowiona za dodatkową opłatą.</span><span class="lang-en" style="display:none;">By purchasing a Lease license, the user does not acquire full copyrights to the composition (Hypnagogia Studio remains the owner). Producer credit is required in metadata (Prod. by prod.explore). Upon exceeding stream limits specific to a license (e.g., 50,000 for Basic), the license must be renewed.</span></p>
+
+            <h3><span class="lang-pl">3. Usługi Mix/Mastering</span><span class="lang-en" style="display:none;">3. Mix/Mastering</span></h3>
+            <p><span class="lang-pl">Czas realizacji usług zależy od stopnia skomplikowania, jednak standardowo wynosi 3-7 dni roboczych. W wyjściowej cenie zawarte są dwie (2) darmowe poprawki do utworu przygotowane we wstępnym briefie.</span><span class="lang-en" style="display:none;">Delivery time depends on complexity, usually taking 3-7 business days. The basic price includes two (2) free revisions per track submitted via the initial mix brief.</span></p>
+
+            <h3><span class="lang-pl">4. Płatności i Zwroty</span><span class="lang-en" style="display:none;">4. Payments & Refunds</span></h3>
+            <p><span class="lang-pl">Z racji natury dóbr w pełni cyfrowych, zwroty za zakupione licencje muzyczne (.wav/.mp3) nie są akceptowane po potwierdzeniu transakcji na platformie. Płatności są bezpiecznie szyfrowane i przetwarzane przez zewnętrzną bramkę płatności Stripe.</span><span class="lang-en" style="display:none;">Due to the strictly digital nature of the products, refunds for downloaded music licenses are not accepted once the transaction is finalized. Payments are securely processed and encrypted by the external Stripe gateway.</span></p>
+          </div>
+        </div>
+
+        <!-- PRIVACY POLICY -->
+        <div id="legal-doc-privacy" style="display:none;">
+          <h2 class="form-title">
+            <span class="lang-pl">Polityka Prywatności</span>
+            <span class="lang-en" style="display:none;">Privacy Policy</span>
+          </h2>
+          <div class="legal-text">
+            <p><span class="lang-pl">Administratorem wszelkich danych przetwarzanych przez stronę jest Hypnagogia Studio z siedzibą w Polsce.</span><span class="lang-en" style="display:none;">The data controller for all inputs processed by the website is Hypnagogia Studio located in Poland.</span></p>
+            <p><span class="lang-pl"><b>Gromadzenie Danych:</b> Osobiste dane kontaktowe (imię i nazwisko, adres email, linki do zewnętrznych profili) wpisywane w formularzach są wykorzystywane WYŁĄCZNIE w celu poprawnego wygenerowania spersonalizowanej umowy licencyjnej na instrumental, możliwości przekazania skompilowanych plików WAV/MP3 oraz realizowania standardowych działań z zakresu inżynierii dźwięku dla interesanta. Zebrane dane nie są subskrybowane pod newsletter ani zbywane podmiotom trzecim w celach handlowych.</span><span class="lang-en" style="display:none;"><b>Data Collection:</b> Personal contact data (full name, email address, links to external profiles) entered in the forms is used STRICTLY for generating personalized beat license agreements, transferring rendered audio files, and conducting standard sound engineering services requested by the customer. Collected data is neither linked to a newsletter array nor sold to third parties for commercial activity.</span></p>
+            <p><span class="lang-pl"><b>Informacje Rozliczeniowe:</b> Strona używa bezpiecznego kanału transakcyjnego od firmy technologicznej Stripe (operator na rynek polski m.in. BLIK i Przelewy24). Hypnagogia Studio z zasady nie posiada i nie magazynuje we własnych bazach pełnych, jednoznacznych numerów i kodów wprowadzanych kart płatniczych - ten proces rezyduje wyłącznie na zewnętrznych i zabeZpieczonych serwerach Stripe.</span><span class="lang-en" style="display:none;"><b>Billing Details:</b> The website utilizes a secure transaction gateway powered by Stripe. Hypnagogia Studio does not locally contain, hold, nor log raw debit/credit card numbers – this processing layer strictly resides within Stripe's secured environments.</span></p>
+            <p><span class="lang-pl"><b>Prawa Podmiotu:</b> Otrzymujesz absolutne i zbywalne prawo wglądu w przetworzone dane oraz wymuszenia ich usunięcia przesyłając zapytanie adresatowi poprzez formy kontaktu podane na mediach społecznościowych, lub mailowo.</span><span class="lang-en" style="display:none;"><b>Subject Rights:</b> You reserve an absolute right to access your processed data and enforce its irreversible deletion by sending an inquiry to our mail or relevant social channels.</span></p>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

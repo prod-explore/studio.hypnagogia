@@ -718,14 +718,35 @@
       promoFeedback.className = 'promo-feedback';
     }
     if (selectedBeatPreview) {
+      const isPL = document.documentElement.getAttribute('lang') !== 'us';
       selectedBeatPreview.innerHTML = `
-        <span class="lang-pl">Wybierz beat z katalogu aby kontynuować</span>
-        <span class="lang-en" style="display:none;">Select a beat from catalog to continue</span>
+        <span class="lang-pl" style="display:${isPL ? '' : 'none'};">Wybierz beat z katalogu aby kontynuować</span>
+        <span class="lang-en" style="display:${isPL ? 'none' : ''};">Select a beat from catalog to continue</span>
       `;
     }
 
     if (addressGroup) addressGroup.style.display = 'none';
     if (distanceWarning) distanceWarning.style.display = 'none';
+  };
+
+  window.openLegal = function (type) {
+    const modal = document.getElementById('legal-modal');
+    const termsDoc = document.getElementById('legal-doc-terms');
+    const privacyDoc = document.getElementById('legal-doc-privacy');
+    
+    if (termsDoc) termsDoc.style.display = type === 'terms' ? 'block' : 'none';
+    if (privacyDoc) privacyDoc.style.display = type === 'privacy' ? 'block' : 'none';
+    
+    if (modal) {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  window.closeLegal = function () {
+    const modal = document.getElementById('legal-modal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
   };
 
   // License change handler
@@ -925,6 +946,7 @@
     const btn = document.getElementById('lang-toggle');
     if (!btn) return;
     btn.addEventListener('click', toggleLang);
+    setLang('us');
   });
 })();
 
@@ -1209,7 +1231,13 @@ if (!window.YT || !window.YT.Player) {
       renderBeats(beats);
     } catch (err) {
       const catalog = $('#beat-catalog');
-      if (catalog) catalog.innerHTML = '<div style="color:#b55">Nie udało się pobrać katalogu beatów :(</div>';
+      if (catalog) {
+        const isPL = document.documentElement.getAttribute('lang') !== 'us';
+        catalog.innerHTML = `<div style="color:#b55">
+          <span class="lang-pl" style="display:${isPL ? '' : 'none'};">Nie udało się pobrać katalogu beatów :( <br>W razie problemów napisz do mnie na <a href="https://www.instagram.com/prod.explore" target="_blank" style="color:#fff; text-decoration:underline;">Instagramie</a>.</span>
+          <span class="lang-en" style="display:${isPL ? 'none' : ''};">Failed to load the beat catalog :( <br>If you encounter issues, hit me up on <a href="https://www.instagram.com/prod.explore" target="_blank" style="color:#fff; text-decoration:underline;">Instagram</a>.</span>
+        </div>`;
+      }
     }
   }
   document.addEventListener('DOMContentLoaded', function () {
