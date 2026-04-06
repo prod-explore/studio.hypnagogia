@@ -750,7 +750,7 @@ b3 {
   }
 
   .topbar__inner {
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
   .burger {
@@ -767,8 +767,8 @@ b3 {
     padding: 0;
     display: flex;
     gap: 16px;
-    justify-content: end;
-    /* align buttons to the right */
+    justify-content: flex-start;
+    /* align buttons to the left */
   }
 
   .brand {

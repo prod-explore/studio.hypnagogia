@@ -904,10 +904,10 @@
     });
     // Toggle CSS flags now using class not id
     document.querySelectorAll('.flag-pl').forEach(el => {
-      el.style.display = isPL ? 'inline-block' : 'none';
+      el.style.display = !isPL ? 'inline-block' : 'none';
     });
     document.querySelectorAll('.flag-us').forEach(el => {
-      el.style.display = !isPL ? 'inline-block' : 'none';
+      el.style.display = isPL ? 'inline-block' : 'none';
     });
     // Toggle price currency
     document.querySelectorAll('.price-pl').forEach(el => {
