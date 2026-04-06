@@ -110,9 +110,9 @@ b3 {
   gap: 16px;
   width: 100%;
   margin: 0;
-  padding: 0 12px;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  padding: 0 24px; /* Slightly more padding so it breathes well */
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -157,7 +157,7 @@ b3 {
 
 .brand b1 {
   font-weight: 900;
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(3.75rem, 7.5vw, 6.75rem); /* Scaled 1.5x from previous */
   display: inline-block;
   color: #fff;
   /* fallback, also helps with filters */
@@ -750,8 +750,7 @@ b3 {
   }
 
   .topbar__inner {
-    grid-template-columns: auto 1fr auto;
-    /* desktop: burger(hidden) | spacer | nav */
+    justify-content: flex-end;
   }
 
   .burger {
