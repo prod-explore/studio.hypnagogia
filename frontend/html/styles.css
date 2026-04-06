@@ -143,7 +143,7 @@ b3 {
 }
 
 .brand {
-  text-align: center;
+  text-align: left;
   font-weight: 300;
   text-transform: uppercase;
   font-size: clamp(2rem, 4vw, 3.5rem);
@@ -152,7 +152,7 @@ b3 {
   user-select: none;
   letter-spacing: 0.15em;
   padding: 0;
-  margin-bottom: 32px;
+  margin-bottom: 25vh;
 }
 
 .brand b1 {
@@ -228,7 +228,7 @@ b3 {
 #home.section {
   position: relative;
   padding-top: 0;
-  margin-top: 50vh;
+  margin-top: 25vh;
   z-index: 45;
 }
 
