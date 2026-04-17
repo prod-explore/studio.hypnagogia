@@ -1,4 +1,0 @@
-{
-  "ATSTUDIO": { "discount": 20, "type": "percent", "validUntil": "2025-01-31", "maxUses": 50, "used": 0 },
-  "FRIEND50": { "discount": 50, "type": "percent", "validUntil": null, "maxUses": 5, "used": 0 }
-}
