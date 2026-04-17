@@ -1638,4 +1638,70 @@ a.beat-title:hover {
 
 .legal-text b {
   color: #d677f0;
-}
+}
+
+/* Beats Header & Search */
+.beats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.beats-header .section__title {
+  margin: 0;
+}
+.beat-search-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  height: 40px;
+}
+.beat-search-input {
+  width: 0;
+  opacity: 0;
+  padding: 8px 36px 8px 16px;
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  color: #fff;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  outline: none;
+}
+.beat-search-input:focus {
+  border-color: #d677f0;
+}
+.beat-search-input.is-active {
+  width: 200px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.beat-search-btn {
+  background: transparent;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, background 0.2s;
+  z-index: 2;
+  position: relative;
+}
+.beat-search-btn:hover {
+  color: #d677f0;
+}
+@media (max-width: 600px) {
+  .beat-search-input.is-active {
+    width: 150px;
+  }
+}
+

@@ -1242,6 +1242,31 @@ if (!window.YT || !window.YT.Player) {
   }
   document.addEventListener('DOMContentLoaded', function () {
     fetchBeatsFromAPI();
+
+    const searchBtn = $('#beat-search-btn');
+    const searchInput = $('#beat-search-input');
+    
+    if (searchBtn && searchInput) {
+      searchBtn.addEventListener('click', () => {
+        searchInput.classList.toggle('is-active');
+        if (searchInput.classList.contains('is-active')) {
+          searchInput.focus();
+        } else {
+          searchInput.value = '';
+          renderBeats(beats);
+        }
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        const val = e.target.value.toLowerCase().trim();
+        if (!val) {
+          renderBeats(beats);
+        } else {
+          const filtered = beats.filter(b => decodeEntities(b.title).toLowerCase().includes(val));
+          renderBeats(filtered);
+        }
+      });
+    }
   });
 })();
 // --- END BEATS MODULE ---
