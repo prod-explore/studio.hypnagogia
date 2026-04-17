@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://studio.hypnagogia.pl/sitemap.xml

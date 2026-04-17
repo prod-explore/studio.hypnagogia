@@ -1071,7 +1071,7 @@ if (!window.YT || !window.YT.Player) {
         class: 'yt-minia-wrap',
         style: { position: 'relative', width: '90px', height: '90px', flex: 'none', cursor: 'pointer' }
       },
-        el('img', { src: beat.thumbnail, alt: 'miniaturka', style: { width: '90px', height: '90px', borderRadius: '9px', objectFit: 'cover', background: '#222', display: 'block' } }),
+        el('img', { src: beat.thumbnail, alt: 'miniaturka', loading: 'lazy', style: { width: '90px', height: '90px', borderRadius: '9px', objectFit: 'cover', background: '#222', display: 'block' } }),
         el('a', {
           href: ytLink, target: '_blank', tabIndex: 0,
           class: 'yt-logo-link'
