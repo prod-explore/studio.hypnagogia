@@ -15,8 +15,11 @@ services:
     container_name: hypnagogia-backend
     env_file:
       - ./backend/.env
+    volumes:
+      - ./backend/data:/app/data
     networks:
       - hypnagogia
+
 
 networks:
   hypnagogia:
