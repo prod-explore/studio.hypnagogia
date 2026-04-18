@@ -57,8 +57,8 @@
         <ul class="nav__list">
           <li><a href="#home" class="nav__link"><span class="lang-pl">HOME</span><span class="lang-en"
                 style="display:none;">HOME</span></a></li>
-          <li><a href="#studio" class="nav__link"><span class="lang-pl">STUDIO</span><span class="lang-en"
-                style="display:none;">STUDIO</span></a></li>
+          <!-- <li><a href="#studio" class="nav__link"><span class="lang-pl">STUDIO</span><span class="lang-en"
+                style="display:none;">STUDIO</span></a></li> -->
           <li><a href="#mixmaster" class="nav__link"><span class="lang-pl">MIX/MASTERING</span><span class="lang-en"
                 style="display:none;">MIX/MASTERING</span></a></li>
           <li><a href="#beats" class="nav__link"><span class="lang-pl">BEATY</span><span class="lang-en"
@@ -96,74 +96,6 @@
           <p id="note-en" class="section-note lang-en" style="display:none;">Below you will find the full offer of our
             studio!</p>
         </aside>
-      </div>
-    </section>
-
-    <section id="studio" class="section" aria-label="STUDIO NAGRAŃ">
-      <div class="container">
-        <h2 class="section__title"><span class="lang-pl">STUDIO NAGRAŃ</span><span class="lang-en"
-            style="display:none;">RECORDING STUDIO</span></h2>
-        
-        <div class="section__grid section__grid--note-left">
-          <aside class="section-note section-note--left" aria-label="Mobilne Studio Nagrań">
-            <h3 class="section-note__title"><span class="lang-pl">Mobilne Studio Katowice</span><span class="lang-en"
-                style="display:none;">Mobile Studio</span></h3>
-            <p class="section-note__text lang-pl">
-              Profesjonalna realizacja dźwięku z dojazdem do Ciebie. Idealne i optymalne rozwiązanie niezależnie od tego czy interesuje cię <b2>nagrywanie wokali w domu</b2>, 
-              rejestracja <b2>szkiców rapowych</b2>, czy też profesjonalna realizacja <b2>podcastów na Śląsku</b2>.
-            </p>
-            <p class="section-note__text lang-en" style="display:none;">
-              Professional sound recording delivered to you. Ideal for home vocal tracking, rap sketches, and podcasts.
-            </p>
-            <p class="section-note__text lang-pl" style="margin-top: 16px;">
-              <b2>Dojazd na terenie miasta Katowice w cenie!</b2><br>
-              <span style="font-size: 0.85em; opacity: 0.8;">Cena wyjściowa: od <b3>200</b3> PLN za 2h</span>
-            </p>
-            <p class="section-note__text lang-en" style="display:none;" style="margin-top: 16px;">
-              <b2>Commute within Katowice city limits included!</b2><br>
-              <span style="font-size: 0.85em; opacity: 0.8;">Starting price: from <b3>$50</b3> per 2h</span>
-            </p>
-          </aside>
-
-          <div class="section__main">
-            <div class="studio-grid">
-              <div class="studio-card" id="mobile">
-                <h3 class="studio-card__title"><span class="lang-pl">Wyjazdy</span><span class="lang-en"
-                    style="display:none;">Mobile</span></h3>
-                <p class="studio-description__text lang-pl">Mobilne studio nagraniowe. Oszczędzasz czas na dojazdy i nagrywasz w komfortowym dla siebie środowisku, a my zajmujemy się techniczną stroną nagrania.</p>
-                <p class="studio-description__text lang-en" style="display:none;">Mobile recording studio. Save time on commuting and record in your comfortable environment while we handle the technical side.</p>
-                
-                <div class="pricing-section">
-                  <h4 class="pricing-title"><span class="lang-pl">Pakiety Godzinowe</span><span class="lang-en"
-                      style="display:none;">Hourly Packages</span></h4>
-                  <ul class="pricing-list">
-                    <li>2h - <span class="price-pl">200zł</span><span class="price-us" style="display:none;">$50</span></li>
-                    <li>3h - <span class="price-pl">280zł</span><span class="price-us" style="display:none;">$70</span></li>
-                    <li>4h - <span class="price-pl">360zł</span><span class="price-us" style="display:none;">$90</span></li>
-                    <li>5h - <span class="price-pl">440zł</span><span class="price-us" style="display:none;">$110</span></li>
-                  </ul>
-                </div>
-                <!-- Mini sprzęt w dopisku -->
-                <p class="studio-note lang-pl">*Zestaw oparty na cichym i profesjonalnym sprzęcie (Focusrite 3rd Gen, MXL, klatka akustyczna), idealnie dopasowany do przestrzeni domowych i biurowych.</p>
-                <p class="studio-note lang-en" style="display:none;">*Setup based on quiet and professional equipment, perfectly suited for home and office spaces.</p>
-              </div>
-
-              <!-- Fallback stacjonarne -->
-              <div class="studio-card" id="stationary" style="opacity: 0.85;">
-                <h3 class="studio-card__title"><span class="lang-pl">Opcja Stacjonarna</span><span class="lang-en"
-                    style="display:none;">Stationary Option</span></h3>
-                <p class="studio-description__text lang-pl">Możliwość realizacji wokalu w warunkach studyjnych (współpracujemy z zewnętrznymi lokalami wg. dostępności - wymaga wcześniejszych ustaleń).</p>
-                <p class="studio-description__text lang-en" style="display:none;">Vocal recording in studio conditions (we cooperate with external venues subject to availability - requires prior arrangement).</p>
-              </div>
-            </div>
-
-            <div class="studio-cta-container" style="justify-content: flex-start; margin-top: 24px;">
-              <button class="studio-cta-btn" onclick="openForm('studio')" style="max-width: 320px;">
-                <span class="lang-pl">REZERWUJ SESJĘ</span><span class="lang-en" style="display:none;">BOOK A SESSION</span>
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -297,98 +229,6 @@
       </button>
       <div class="form-container">
         <h2 id="form-title" class="form-title">Formularz zgłoszeniowy</h2>
-        <!-- Studio Form (Mobile Focus) -->
-        <form id="studio-form" class="application-form" style="display: none;">
-          <!-- Basic Info -->
-          <div class="form-group">
-            <label for="studio-name" class="form-label">
-              <span class="lang-pl">Imię / Ksywa</span>
-              <span class="lang-en" style="display:none;">Name / Nickname</span>
-            </label>
-            <input type="text" id="studio-name" name="name" class="form-input" required>
-          </div>
-
-          <div class="form-group">
-            <label for="studio-email" class="form-label">Email</label>
-            <input type="email" id="studio-email" name="email" class="form-input" required>
-          </div>
-
-          <!-- Session details -->
-          <div class="form-group">
-            <label for="studio-type" class="form-label">
-              <span class="lang-pl">Rodzaj realizacji</span>
-              <span class="lang-en" style="display:none;">Type of session</span>
-            </label>
-            <select id="studio-type" name="sessionType" class="form-select" required>
-              <option value="vocal_rap">Nagranie wokalu / rapu</option>
-              <option value="podcast">Podcast</option>
-              <option value="other">Inne (opiszę w komentarzu)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="studio-location" class="form-label">
-              <span class="lang-pl">Lokalizacja</span>
-              <span class="lang-en" style="display:none;">Location</span>
-            </label>
-            <select id="studio-location" name="locationType" class="form-select" required>
-              <option value="mobile">Mobilnie (z dojazdem)</option>
-              <option value="stationary">Stacjonarnie (fallback - ustalane indywidualnie)</option>
-            </select>
-          </div>
-
-          <div class="form-group" id="address-group" style="display: none;">
-            <label for="studio-address" class="form-label">
-              <span class="lang-pl">Adres dojazdu</span>
-              <span class="lang-en" style="display:none;">Address</span>
-            </label>
-            <input type="text" id="studio-address" name="address" class="form-input"
-              placeholder="np. ul. Korfantego, Katowice">
-            <p class="studio-note lang-pl">*Dojazd na terenie m. Katowice wliczony w cenę.</p>
-            <p class="studio-note lang-en" style="display:none;">*Commute within Katowice included.</p>
-          </div>
-
-          <!-- Time & Length -->
-          <div class="form-group">
-            <label for="studio-date" class="form-label">
-              <span class="lang-pl">Preferowany termin</span>
-              <span class="lang-en" style="display:none;">Preferred Date</span>
-            </label>
-            <input type="date" id="studio-date" name="date" class="form-input" required>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="studio-start" class="form-label">Godzina</label>
-              <input type="time" id="studio-start" name="startHour" class="form-input" required>
-            </div>
-
-            <div class="form-group">
-              <label for="studio-length" class="form-label">Długość sesji</label>
-              <select id="studio-length" name="sessionLength" class="form-select" required>
-                <option value="2h">2 godziny</option>
-                <option value="3h">3 godziny</option>
-                <option value="4h">4 godziny</option>
-                <option value="5h">5 godzin</option>
-                <option value="custom">Cały dzień / wycena indywidualna</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="studio-comment" class="form-label">
-              <span class="lang-pl">Oczekiwania / Opis projektu</span>
-              <span class="lang-en" style="display:none;">Expectations / Project Details</span>
-            </label>
-            <textarea id="studio-comment" name="comment" class="form-textarea" rows="4"
-              placeholder="Dodaj linki do demo, powiedz nam więcej o projekcie..."></textarea>
-          </div>
-
-          <button type="submit" class="form-submit">
-            <span class="lang-pl">ZAREZERWUJ</span>
-            <span class="lang-en" style="display:none;">BOOK NOW</span>
-          </button>
-        </form>
 
         <!-- Mix/Mastering Form -->
         <form id="mixmaster-form" class="application-form" style="display: none;">

@@ -469,12 +469,8 @@
 (function () {
   const formModal = document.getElementById('form-modal');
   const formTitle = document.getElementById('form-title');
-  const studioForm = document.getElementById('studio-form');
   const mixmasterForm = document.getElementById('mixmaster-form');
   const beatyForm = document.getElementById('beaty-form');
-  
-  const studioLocationSelect = document.getElementById('studio-location');
-  const addressGroup = document.getElementById('address-group');
 
   // Beats form elements
   const beatyLicenseSelect = document.getElementById('beaty-license');
@@ -642,13 +638,11 @@
     if (!formModal) return;
 
     // Ukryj wszystkie formularze
-    if (studioForm) studioForm.style.display = 'none';
     if (mixmasterForm) mixmasterForm.style.display = 'none';
     if (beatyForm) beatyForm.style.display = 'none';
 
     // Ustaw tytuł formularza
     const titles = {
-      'studio': { pl: 'Zgłoszenie do Studia Nagraniowego', en: 'Studio Booking' },
       'mixmaster': { pl: 'Zgłoszenie Mix/Mastering', en: 'Mix/Mastering Request' },
       'beaty': { pl: 'Kup licencję do beatu', en: 'Buy Beat License' }
     };
@@ -664,12 +658,6 @@
     // Pokaż odpowiedni formularz
     let activeForm = null;
     switch (serviceType) {
-      case 'studio':
-        if (studioForm) {
-          studioForm.style.display = 'block';
-          activeForm = studioForm;
-        }
-        break;
       case 'mixmaster':
         if (mixmasterForm) {
           mixmasterForm.style.display = 'block';
@@ -706,7 +694,6 @@
     document.body.style.overflow = '';
 
     // Reset formularzy
-    if (studioForm) studioForm.reset();
     if (mixmasterForm) mixmasterForm.reset();
     if (beatyForm) beatyForm.reset();
 
@@ -724,8 +711,6 @@
         <span class="lang-en" style="display:${isPL ? 'none' : ''};">Select a beat from catalog to continue</span>
       `;
     }
-
-    if (addressGroup) addressGroup.style.display = 'none';
   };
 
   window.openLegal = function (type) {
@@ -766,16 +751,7 @@
     });
   }
 
-  // Location toggle event listener
-  if (studioLocationSelect) {
-    studioLocationSelect.addEventListener('change', function () {
-      if (addressGroup) {
-        addressGroup.style.display = this.value === 'mobile' ? 'block' : 'none';
-      }
-    });
-  }
-
-  // Form submission handler
+  // Promo validation
   function setupFormSubmission(form, formType) {
     if (!form) return;
 
@@ -784,13 +760,6 @@
 
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
-
-      if (formType === 'studio' && data.locationType === 'mobile') {
-        data.comment = `${data.comment || ''}\n\nLokalizacja sesji: ${data.address}`;
-        delete data.address;
-      } else if (formType === 'studio') {
-        delete data.address;
-      }
 
       // BEATS CHECKOUT - redirect to Stripe
       if (formType === 'beaty') {
@@ -830,11 +799,9 @@
         return;
       }
 
-      // Other forms (mixmaster, studio)
+      // Other forms (mixmaster)
       let endpoint = '';
-      if (formType === 'studio') {
-        endpoint = '/api/studio';
-      } else if (formType === 'mixmaster') {
+      if (formType === 'mixmaster') {
         endpoint = '/api/mixmaster';
       }
 
@@ -864,7 +831,6 @@
   }
 
   // Setup form handlers
-  setupFormSubmission(studioForm, 'studio');
   setupFormSubmission(mixmasterForm, 'mixmaster');
   setupFormSubmission(beatyForm, 'beaty');
 
