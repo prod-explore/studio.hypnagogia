@@ -5,21 +5,25 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HYPNAGOGIA STUDIO | Profesjonalne Studio, Mix/Mastering i Beatz</title>
-  <meta name="description" content="Hypnagogia Studio Katowice / Mobilnie. Autorskie podkłady muzyczne (Beaty), profesjonalny Mix i Mastering, sprzedaż licencji. Osiągnij perfekcyjne brzmienie.">
-  <meta name="keywords" content="studio nagrań, beaty na sprzedaż, kup beat, mix, mastering, producent muzyczny, Katowice, rap beat, trap beat, lease">
-  
+  <meta name="description"
+    content="Hypnagogia Studio Katowice / Mobilnie. Autorskie podkłady muzyczne (Beaty), profesjonalny Mix i Mastering, sprzedaż licencji. Osiągnij perfekcyjne brzmienie.">
+  <meta name="keywords"
+    content="studio nagrań, beaty na sprzedaż, kup beat, mix, mastering, producent muzyczny, Katowice, rap beat, trap beat, lease">
+
   <!-- Open Graph / Meta Social -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://studio.hypnagogia.pl/">
   <meta property="og:title" content="HYPNAGOGIA STUDIO | Mix/Mastering & Beaty">
-  <meta property="og:description" content="Autorskie podkłady muzyczne, profesjonalny Mix i Mastering. Wejdź w strefę pomiędzy wizją a realizacją.">
+  <meta property="og:description"
+    content="Autorskie podkłady muzyczne, profesjonalny Mix i Mastering. Wejdź w strefę pomiędzy wizją a realizacją.">
   <meta property="og:image" content="https://studio.hypnagogia.pl/images/banner1.webp">
-  
+
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://studio.hypnagogia.pl/">
   <meta property="twitter:title" content="HYPNAGOGIA STUDIO | Mix/Mastering & Beaty">
-  <meta property="twitter:description" content="Autorskie podkłady muzyczne, profesjonalny Mix i Mastering. Wejdź w strefę pomiędzy wizją a realizacją.">
+  <meta property="twitter:description"
+    content="Autorskie podkłady muzyczne, profesjonalny Mix i Mastering. Wejdź w strefę pomiędzy wizją a realizacją.">
   <meta property="twitter:image" content="https://studio.hypnagogia.pl/images/banner1.webp">
 
   <meta name="google-site-verification" content="xngyljEomMwuV5NEWFdt1h_z254LTjp3U0Ms7oxrmpg" />
@@ -38,7 +42,40 @@
   <link rel="stylesheet" href="styles.css">
   <script defer src="script.js"></script>
 
-
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Hypnagogia Studio",
+    "url": "https://studio.hypnagogia.pl",
+    "logo": "https://studio.hypnagogia.pl/images/hypnagogic-state.jpg",
+    "image": "https://studio.hypnagogia.pl/images/banner1.webp",
+    "description": "Profesjonalne studio nagrań w Katowicach. Autorskie podkłady muzyczne (Beaty), Mix i Mastering, sprzedaż licencji.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Katowice",
+      "addressCountry": "PL"
+    },
+    "sameAs": [
+      "https://studio.hypnagogia.pl"
+    ],
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Mix / Mastering",
+        "priceCurrency": "PLN",
+        "price": "250"
+      },
+      {
+        "@type": "Offer",
+        "name": "Lease Basic Beat",
+        "priceCurrency": "PLN",
+        "price": "49"
+      }
+    ]
+  }
+  </script>
 
 </head>
 
@@ -80,7 +117,7 @@
     <section id="home" class="section" aria-label="HOME">
       <div class="container">
         <h1 class="brand" aria-label="Nazwa strony">
-          <b1>HYPNAGOGIA</b1><br>
+          <span class="brand-main">HYPNAGOGIA</span><br>
           <span class="brand-studio">STUDIO</span>
         </h1>
         <h2 class="section__title"><span class="lang-pl">HOME</span><span class="lang-en"
@@ -153,19 +190,22 @@
             <h3 class="section-note__title"><span class="lang-pl">Oferta:</span><span class="lang-en"
                 style="display:none;">Offer:</span></h3>
             <p>
-              <b3><span class="price-pl">250</span><span class="price-us" style="display:none;">$70</span></b3>
-              <b2><span class="price-pl">PLN</span><span class="price-us" style="display:none;">USD</span></b2> - <span
-                class="lang-pl">cena wokół której oscylujemy.</span><span class="lang-en" style="display:none;">starting
+              <span class="price-amount"><span class="price-pl">250</span><span class="price-us"
+                  style="display:none;">$70</span></span>
+              <span class="price-currency"><span class="price-pl">PLN</span><span class="price-us"
+                  style="display:none;">USD</span></span> - <span class="lang-pl">cena wokół której
+                oscylujemy.</span><span class="lang-en" style="display:none;">starting
                 price.</span>
             </p>
             <p><span class="lang-pl">Zniżki:</span><span class="lang-en" style="display:none;">Discounts:</span></p>
             <p>
-              <b2>-20%</b2> - <span class="lang-pl">kawałek nagranu u nas.</span><span class="lang-en"
-                style="display:none;">track recorded at our studio.</span>
+              <span class="price-currency">-20%</span> - <span class="lang-pl">kawałek nagranu u nas.</span><span
+                class="lang-en" style="display:none;">track recorded at our studio.</span>
             </p>
             <p>
-              <b2>-10%</b2> - <span class="lang-pl">kawałek nagrany do naszego instrumentala.</span><span
-                class="lang-en" style="display:none;">track recorded to our instrumental.</span>
+              <span class="price-currency">-10%</span> - <span class="lang-pl">kawałek nagrany do naszego
+                instrumentala.</span><span class="lang-en" style="display:none;">track recorded to our
+                instrumental.</span>
             </p>
             <p class="section-note__text lang-pl">Usługa m/m w naszym studio jest wyceniana w zależności od poziomu
               złożoności, ilości scieżek oraz tego czy był on nagrany u nas lub do naszego instrumentala.</p>
@@ -189,22 +229,26 @@
           <div class="beat-search-container">
             <input type="text" id="beat-search-input" class="beat-search-input" placeholder="Szukaj...">
             <button id="beat-search-btn" class="beat-search-btn" aria-label="Szukaj">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
             </button>
           </div>
         </div>
         <div class="section__grid section__grid--note-left">
           <aside class="section-note section-note--left" aria-label="Informacja o sekcji BEATY">
             <p class="section-note__text"><span class="lang-pl">
-                <b2>Ceny licencji:</b2><br>
-                • Lease Basic: <b3>49</b3> PLN<br>
-                • Lease Premium: <b3>179</b3> PLN<br>
-                • Exclusive: <b3>888</b3> PLN
+                <span class="price-currency">Ceny licencji:</span><br>
+                • Lease Basic: <span class="price-amount">49</span> PLN<br>
+                • Lease Premium: <span class="price-amount">179</span> PLN<br>
+                • Exclusive: <span class="price-amount">888</span> PLN
               </span><span class="lang-en" style="display:none;">
-                <b2>License prices:</b2><br>
-                • Lease Basic: <b3>$12</b3><br>
-                • Lease Premium: <b3>$45</b3><br>
-                • Exclusive: <b3>$220</b3>
+                <span class="price-currency">License prices:</span><br>
+                • Lease Basic: <span class="price-amount">$12</span><br>
+                • Lease Premium: <span class="price-amount">$45</span><br>
+                • Exclusive: <span class="price-amount">$220</span>
               </span></p>
             <p class="section-note__text"><span class="lang-pl">Kliknij 🛒 przy beacie żeby przejść do
                 zakupu!</span><span class="lang-en" style="display:none;">Click 🛒 on a beat to purchase!</span></p>
@@ -259,8 +303,7 @@
               <span class="lang-pl">Komentarz</span>
               <span class="lang-en" style="display:none;">Comment</span>
             </label>
-            <textarea id="mixmaster-comment" name="comment" class="form-textarea" rows="4"
-              placeholder="..."></textarea>
+            <textarea id="mixmaster-comment" name="comment" class="form-textarea" rows="4" placeholder="..."></textarea>
           </div>
 
           <button type="submit" class="form-submit">
@@ -391,7 +434,8 @@
     <div class="form-modal__content legal-modal-content">
       <button class="form-modal__close" onclick="closeLegal()" aria-label="Zamknij">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
         </svg>
       </button>
       <div class="form-container legal-container">
@@ -403,17 +447,40 @@
             <span class="lang-en" style="display:none;">Terms of Service</span>
           </h2>
           <div class="legal-text">
-            <h3><span class="lang-pl">1. Przedmiot Usług</span><span class="lang-en" style="display:none;">1. Scope of Services</span></h3>
-            <p><span class="lang-pl">Studio oferuje sprzedaż cyfrowych licencji na podkłady muzyczne (Beaty) oraz usługi z zakresu inżynierii dźwięku (Mix/Mastering).</span><span class="lang-en" style="display:none;">The studio offers the sale of digital licenses for instrumentals (Beats) and sound engineering services (Mix/Mastering).</span></p>
+            <h3><span class="lang-pl">1. Przedmiot Usług</span><span class="lang-en" style="display:none;">1. Scope of
+                Services</span></h3>
+            <p><span class="lang-pl">Studio oferuje sprzedaż cyfrowych licencji na podkłady muzyczne (Beaty) oraz usługi
+                z zakresu inżynierii dźwięku (Mix/Mastering).</span><span class="lang-en" style="display:none;">The
+                studio offers the sale of digital licenses for instrumentals (Beats) and sound engineering services
+                (Mix/Mastering).</span></p>
 
-            <h3><span class="lang-pl">2. Licencje na Beaty</span><span class="lang-en" style="display:none;">2. Beat Licensing</span></h3>
-            <p><span class="lang-pl">Kupując licencję Lease, użytkownik nie nabywa pełni praw autorskich do kompozycji (właścicielem pozostaje Hypnagogia Studio). Wymagane jest oznaczenie twórcy w metadanych (Prod. by prod.explore). Po przekroczeniu określonego typu licencji limitu streamów (np. 50,000 dla Basic), licencja musi zostać odnowiona za dodatkową opłatą.</span><span class="lang-en" style="display:none;">By purchasing a Lease license, the user does not acquire full copyrights to the composition (Hypnagogia Studio remains the owner). Producer credit is required in metadata (Prod. by prod.explore). Upon exceeding stream limits specific to a license (e.g., 50,000 for Basic), the license must be renewed.</span></p>
+            <h3><span class="lang-pl">2. Licencje na Beaty</span><span class="lang-en" style="display:none;">2. Beat
+                Licensing</span></h3>
+            <p><span class="lang-pl">Kupując licencję Lease, użytkownik nie nabywa pełni praw autorskich do kompozycji
+                (właścicielem pozostaje Hypnagogia Studio). Wymagane jest oznaczenie twórcy w metadanych (Prod. by
+                prod.explore). Po przekroczeniu określonego typu licencji limitu streamów (np. 50,000 dla Basic),
+                licencja musi zostać odnowiona za dodatkową opłatą.</span><span class="lang-en" style="display:none;">By
+                purchasing a Lease license, the user does not acquire full copyrights to the composition (Hypnagogia
+                Studio remains the owner). Producer credit is required in metadata (Prod. by prod.explore). Upon
+                exceeding stream limits specific to a license (e.g., 50,000 for Basic), the license must be
+                renewed.</span></p>
 
-            <h3><span class="lang-pl">3. Usługi Mix/Mastering</span><span class="lang-en" style="display:none;">3. Mix/Mastering</span></h3>
-            <p><span class="lang-pl">Czas realizacji usług zależy od stopnia skomplikowania, jednak standardowo wynosi 3-7 dni roboczych. W wyjściowej cenie zawarte są dwie (2) darmowe poprawki do utworu przygotowane we wstępnym briefie.</span><span class="lang-en" style="display:none;">Delivery time depends on complexity, usually taking 3-7 business days. The basic price includes two (2) free revisions per track submitted via the initial mix brief.</span></p>
+            <h3><span class="lang-pl">3. Usługi Mix/Mastering</span><span class="lang-en" style="display:none;">3.
+                Mix/Mastering</span></h3>
+            <p><span class="lang-pl">Czas realizacji usług zależy od stopnia skomplikowania, jednak standardowo wynosi
+                3-7 dni roboczych. W wyjściowej cenie zawarte są dwie (2) darmowe poprawki do utworu przygotowane we
+                wstępnym briefie.</span><span class="lang-en" style="display:none;">Delivery time depends on complexity,
+                usually taking 3-7 business days. The basic price includes two (2) free revisions per track submitted
+                via the initial mix brief.</span></p>
 
-            <h3><span class="lang-pl">4. Płatności i Zwroty</span><span class="lang-en" style="display:none;">4. Payments & Refunds</span></h3>
-            <p><span class="lang-pl">Z racji natury dóbr w pełni cyfrowych, zwroty za zakupione licencje muzyczne (.wav/.mp3) nie są akceptowane po potwierdzeniu transakcji na platformie. Płatności są bezpiecznie szyfrowane i przetwarzane przez zewnętrzną bramkę płatności Stripe.</span><span class="lang-en" style="display:none;">Due to the strictly digital nature of the products, refunds for downloaded music licenses are not accepted once the transaction is finalized. Payments are securely processed and encrypted by the external Stripe gateway.</span></p>
+            <h3><span class="lang-pl">4. Płatności i Zwroty</span><span class="lang-en" style="display:none;">4.
+                Payments & Refunds</span></h3>
+            <p><span class="lang-pl">Z racji natury dóbr w pełni cyfrowych, zwroty za zakupione licencje muzyczne
+                (.wav/.mp3) nie są akceptowane po potwierdzeniu transakcji na platformie. Płatności są bezpiecznie
+                szyfrowane i przetwarzane przez zewnętrzną bramkę płatności Stripe.</span><span class="lang-en"
+                style="display:none;">Due to the strictly digital nature of the products, refunds for downloaded music
+                licenses are not accepted once the transaction is finalized. Payments are securely processed and
+                encrypted by the external Stripe gateway.</span></p>
           </div>
         </div>
 
@@ -424,10 +491,32 @@
             <span class="lang-en" style="display:none;">Privacy Policy</span>
           </h2>
           <div class="legal-text">
-            <p><span class="lang-pl">Administratorem wszelkich danych przetwarzanych przez stronę jest Hypnagogia Studio z siedzibą w Polsce.</span><span class="lang-en" style="display:none;">The data controller for all inputs processed by the website is Hypnagogia Studio located in Poland.</span></p>
-            <p><span class="lang-pl"><b>Gromadzenie Danych:</b> Osobiste dane kontaktowe (imię i nazwisko, adres email, linki do zewnętrznych profili) wpisywane w formularzach są wykorzystywane WYŁĄCZNIE w celu poprawnego wygenerowania spersonalizowanej umowy licencyjnej na instrumental, możliwości przekazania skompilowanych plików WAV/MP3 oraz realizowania standardowych działań z zakresu inżynierii dźwięku dla interesanta. Zebrane dane nie są subskrybowane pod newsletter ani zbywane podmiotom trzecim w celach handlowych.</span><span class="lang-en" style="display:none;"><b>Data Collection:</b> Personal contact data (full name, email address, links to external profiles) entered in the forms is used STRICTLY for generating personalized beat license agreements, transferring rendered audio files, and conducting standard sound engineering services requested by the customer. Collected data is neither linked to a newsletter array nor sold to third parties for commercial activity.</span></p>
-            <p><span class="lang-pl"><b>Informacje Rozliczeniowe:</b> Strona używa bezpiecznego kanału transakcyjnego od firmy technologicznej Stripe (operator na rynek polski m.in. BLIK i Przelewy24). Hypnagogia Studio z zasady nie posiada i nie magazynuje we własnych bazach pełnych, jednoznacznych numerów i kodów wprowadzanych kart płatniczych - ten proces rezyduje wyłącznie na zewnętrznych i zabeZpieczonych serwerach Stripe.</span><span class="lang-en" style="display:none;"><b>Billing Details:</b> The website utilizes a secure transaction gateway powered by Stripe. Hypnagogia Studio does not locally contain, hold, nor log raw debit/credit card numbers – this processing layer strictly resides within Stripe's secured environments.</span></p>
-            <p><span class="lang-pl"><b>Prawa Podmiotu:</b> Otrzymujesz absolutne i zbywalne prawo wglądu w przetworzone dane oraz wymuszenia ich usunięcia przesyłając zapytanie adresatowi poprzez formy kontaktu podane na mediach społecznościowych, lub mailowo.</span><span class="lang-en" style="display:none;"><b>Subject Rights:</b> You reserve an absolute right to access your processed data and enforce its irreversible deletion by sending an inquiry to our mail or relevant social channels.</span></p>
+            <p><span class="lang-pl">Administratorem wszelkich danych przetwarzanych przez stronę jest Hypnagogia Studio
+                z siedzibą w Polsce.</span><span class="lang-en" style="display:none;">The data controller for all
+                inputs processed by the website is Hypnagogia Studio located in Poland.</span></p>
+            <p><span class="lang-pl"><b>Gromadzenie Danych:</b> Osobiste dane kontaktowe (imię i nazwisko, adres email,
+                linki do zewnętrznych profili) wpisywane w formularzach są wykorzystywane WYŁĄCZNIE w celu poprawnego
+                wygenerowania spersonalizowanej umowy licencyjnej na instrumental, możliwości przekazania skompilowanych
+                plików WAV/MP3 oraz realizowania standardowych działań z zakresu inżynierii dźwięku dla interesanta.
+                Zebrane dane nie są subskrybowane pod newsletter ani zbywane podmiotom trzecim w celach
+                handlowych.</span><span class="lang-en" style="display:none;"><b>Data Collection:</b> Personal contact
+                data (full name, email address, links to external profiles) entered in the forms is used STRICTLY for
+                generating personalized beat license agreements, transferring rendered audio files, and conducting
+                standard sound engineering services requested by the customer. Collected data is neither linked to a
+                newsletter array nor sold to third parties for commercial activity.</span></p>
+            <p><span class="lang-pl"><b>Informacje Rozliczeniowe:</b> Strona używa bezpiecznego kanału transakcyjnego od
+                firmy technologicznej Stripe (operator na rynek polski m.in. BLIK i Przelewy24). Hypnagogia Studio z
+                zasady nie posiada i nie magazynuje we własnych bazach pełnych, jednoznacznych numerów i kodów
+                wprowadzanych kart płatniczych - ten proces rezyduje wyłącznie na zewnętrznych i zabeZpieczonych
+                serwerach Stripe.</span><span class="lang-en" style="display:none;"><b>Billing Details:</b> The website
+                utilizes a secure transaction gateway powered by Stripe. Hypnagogia Studio does not locally contain,
+                hold, nor log raw debit/credit card numbers – this processing layer strictly resides within Stripe's
+                secured environments.</span></p>
+            <p><span class="lang-pl"><b>Prawa Podmiotu:</b> Otrzymujesz absolutne i zbywalne prawo wglądu w przetworzone
+                dane oraz wymuszenia ich usunięcia przesyłając zapytanie adresatowi poprzez formy kontaktu podane na
+                mediach społecznościowych, lub mailowo.</span><span class="lang-en" style="display:none;"><b>Subject
+                  Rights:</b> You reserve an absolute right to access your processed data and enforce its irreversible
+                deletion by sending an inquiry to our mail or relevant social channels.</span></p>
           </div>
         </div>
 
