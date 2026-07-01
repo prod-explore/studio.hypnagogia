@@ -36,6 +36,11 @@ async function updateBeats() {
     console.log("Lista beatów zaktualizowana:", allBeats.length);
   } catch (err) {
     console.error("Błąd aktualizacji beatów:", err.message);
+    if (err.response && err.response.data) {
+      console.error("Szczegóły błędu YouTube:", JSON.stringify(err.response.data, null, 2));
+    }
+    console.log("DEBUG: YT_API_KEY length:", process.env.YT_API_KEY ? process.env.YT_API_KEY.length : "UNDEFINED");
+    console.log("DEBUG: YT_CHANNEL_ID length:", process.env.YT_CHANNEL_ID ? process.env.YT_CHANNEL_ID.length : "UNDEFINED");
   }
 }
 
