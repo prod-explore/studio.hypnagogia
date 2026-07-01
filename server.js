@@ -109,8 +109,8 @@ app.listen(PORT, () => {
     console.log(`\n  ⚡ HYPNAGOGIA running → http://localhost:${PORT}\n`);
 });
 
-// Cron — update beats daily at 18:00
-cron.schedule('0 18 * * *', () => {
+// Cron — update beats every 15 minutes
+cron.schedule('*/15 * * * *', () => {
     console.log('CRON: aktualizacja listy beatów...');
     updateBeats();
 });

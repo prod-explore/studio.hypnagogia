@@ -254,8 +254,34 @@
         onStateChange: (e) => {
           ytPlayerState = e.data;
           if (ytPlayerState === YT.PlayerState.ENDED) { playingBeatId = null; ytCurrentTime = 0; }
-          renderBeats(beats);
+          updateBeatsUI();
         }
+      }
+    });
+  }
+
+  function updateBeatsUI() {
+    const catalog = document.getElementById('beat-catalog');
+    if (!catalog) return;
+    catalog.querySelectorAll('.beat-card').forEach(card => {
+      const beatId = card.dataset.beatId;
+      const isPlaying = playingBeatId === beatId && ytPlayerState === YT.PlayerState.PLAYING;
+      const ytActive = playingBeatId === beatId;
+      let prog = ytActive && ytDuration > 0 ? ytCurrentTime / ytDuration : 0;
+      if (ytActive && isDragging) prog = dragSeekVal;
+
+      const fill = card.querySelector('.beat-progress__fill');
+      const thumbEl = card.querySelector('.beat-progress__thumb');
+      const playBtn = card.querySelector('.beat-play-btn');
+
+      if (fill) fill.style.width = (prog * 100) + '%';
+      if (thumbEl) thumbEl.style.left = (prog * 100) + '%';
+      
+      if (playBtn) {
+        if (isPlaying) playBtn.classList.add('is-playing');
+        else playBtn.classList.remove('is-playing');
+        playBtn.innerHTML = isPlaying ? '❚❚' : '▶';
+        playBtn.title = isPlaying ? 'Pause' : 'Play';
       }
     });
   }
@@ -263,7 +289,7 @@
   function ytProgressLoop() {
     if (!ytPlayerReady || !ytPlayer || !playingBeatId || isDragging) return;
     try { ytDuration = ytPlayer.getDuration() || 1; ytCurrentTime = ytPlayer.getCurrentTime() || 0; } catch { }
-    renderBeats(beats);
+    updateBeatsUI();
     if (ytPlayerState === YT.PlayerState.PLAYING && playingBeatId) {
       ytProgressRAF = requestAnimationFrame(ytProgressLoop);
     }
@@ -289,6 +315,7 @@
 
       const card = document.createElement('div');
       card.className = 'beat-card';
+      card.dataset.beatId = beat.id;
 
       const thumb = document.createElement('img');
       thumb.className = 'beat-card__thumb';
@@ -383,7 +410,7 @@
             ytProgressLoop();
           });
         }
-        renderBeats(beats);
+        updateBeatsUI();
       });
 
       // Buy button
@@ -407,6 +434,7 @@
       card.appendChild(info);
       catalog.appendChild(card);
     });
+    updateBeatsUI();
   }
 
   // Fetch beats
