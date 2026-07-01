@@ -1,24 +1,15 @@
 version: '3.9'
 
 services:
-  nginx:
-    image: nginx:alpine
-    container_name: studio.hypnagogia-nginx
-    volumes:
-      - ./public:/usr/share/nginx/html:ro
-    restart: unless-stopped
-    networks:
-      - hypnagogia
   app:
     build: .
-    container_name: hypnagogia-app
+    container_name: studio.hypnagogia
     env_file:
       - .env
     volumes:
       - ./backend/data:/app/backend/data
     networks:
       - hypnagogia
-
 
 networks:
   hypnagogia:
