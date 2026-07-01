@@ -1,6 +1,11 @@
 const { Resend } = require('resend');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend = null;
+if (process.env.RESEND_API_KEY) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+} else {
+    console.warn("⚠️ OSTRZEŻENIE: Brak zmiennej RESEND_API_KEY w pliku .env. Wysyłka e-maili nie będzie działać.");
+}
 
 /**
  * Send email using Resend
@@ -24,7 +29,7 @@ async function sendMail(arg1, arg2, arg3) {
     if (!to || !subject || !html) throw new Error("Brak wymaganych danych do wysyłki maila");
 
     const messageData = {
-        from: `Studio Hypnagogia <${process.env.EMAIL_FROM || 'no-reply@hypnagogia.pl'}>`,
+        from: `Studio Hypnagogia <${process.env.EMAIL_FROM || 'no-reply@futumore.pl'}>`,
         to: [to],
         subject,
         html,
@@ -43,6 +48,10 @@ async function sendMail(arg1, arg2, arg3) {
                 content: att.content
             };
         });
+    }
+
+    if (!resend) {
+        throw new Error("Resend API key is missing. Email not sent.");
     }
 
     const { data, error } = await resend.emails.send(messageData);

@@ -106,7 +106,7 @@ app.use((err, req, res, next) => {
 // START
 // ============================================
 app.listen(PORT, () => {
-    console.log(`\n  ⚡ HYPNAGOGIA running → http://localhost:${PORT}\n`);
+    console.log(`\n  ⚡ HYPNAGOGIA running on internal port ${PORT}\n`);
 });
 
 // Cron — update beats every 15 minutes
