@@ -5,18 +5,17 @@ services:
     image: nginx:alpine
     container_name: studio.hypnagogia-nginx
     volumes:
-      - ./frontend/html:/usr/share/nginx/html:ro
-      - ./frontend/nginx/hypnagogia.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./public:/usr/share/nginx/html:ro
     restart: unless-stopped
     networks:
       - hypnagogia
-  backend:
-    build: ./backend
-    container_name: hypnagogia-backend
+  app:
+    build: .
+    container_name: hypnagogia-app
     env_file:
-      - ./backend/.env
+      - .env
     volumes:
-      - ./backend/data:/app/data
+      - ./backend/data:/app/backend/data
     networks:
       - hypnagogia
 
