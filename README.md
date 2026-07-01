@@ -1,6 +1,10 @@
 <div align="center">
   <h1>STUDIO HYPNAGOGIA</h1>
   <p><strong>Digital Asset & Licensing E-Commerce Platform</strong></p>
+
+  [![Build Status](https://github.com/prod-explore/studio.hypnagogia/actions/workflows/ci.yml/badge.svg)](https://github.com/prod-explore/studio.hypnagogia/actions)
+  [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
+  [![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
 </div>
 
 ## Architecture Overview
