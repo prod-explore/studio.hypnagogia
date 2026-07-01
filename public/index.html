@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HYPNAGOGIA — Premium Beats by prod. HYPNAGOGIA</title>
+  <meta name="description"
+    content="Exclusive beats & instrumentals by prod. HYPNAGOGIA. Lease or buy exclusive rights. Dark, cinematic, hypnotic production.">
+  <meta name="keywords"
+    content="buy beats, beats for sale, lease beat, exclusive beat, rap beat, trap beat, prod. hypnagogia, hypnagogia">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://studio.hypnagogia.pl/">
+  <meta property="og:title" content="HYPNAGOGIA — Premium Beats">
+  <meta property="og:description"
+    content="Exclusive beats & instrumentals by prod. HYPNAGOGIA. Lease or buy exclusive.">
+  <meta property="og:image" content="https://studio.hypnagogia.pl/images/banner1.webp">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="HYPNAGOGIA — Premium Beats">
+  <meta property="twitter:image" content="https://studio.hypnagogia.pl/images/banner1.webp">
+
+  <meta name="google-site-verification" content="xngyljEomMwuV5NEWFdt1h_z254LTjp3U0Ms7oxrmpg" />
+  <meta name="theme-color" content="#000000">
+  <link rel="canonical" href="https://studio.hypnagogia.pl/">
+  <link rel="icon" href="images/hypnagogic-state.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/hypnagogic-state.jpg">
+
+  <!-- Preload -->
+  <link rel="preload" as="image" href="images/banner1.webp" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "HYPNAGOGIA",
+    "url": "https://studio.hypnagogia.pl",
+    "logo": "https://studio.hypnagogia.pl/images/hypnagogic-state.jpg",
+    "image": "https://studio.hypnagogia.pl/images/banner1.webp",
+    "description": "Premium beats & instrumentals. Lease or buy exclusive rights.",
+    "sameAs": [
+      "https://www.instagram.com/state.of.hypnagogia",
+      "https://www.youtube.com/@hypnagogic-state-of-mind"
+    ],
+    "offers": [
+      { "@type": "Offer", "name": "Lease Basic", "priceCurrency": "PLN", "price": "49" },
+      { "@type": "Offer", "name": "Lease Premium", "priceCurrency": "PLN", "price": "179" },
+      { "@type": "Offer", "name": "Exclusive", "priceCurrency": "PLN", "price": "888" }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- HERO                                        -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="hero" class="hero">
+    <div class="hero__bg">
+      <img src="images/banner1.webp" alt="" class="hero__bg-img" loading="eager">
+      <div class="hero__overlay"></div>
+    </div>
+    <div class="hero__content">
+
+      <p class="hero__tag">✦ MUSIC PRODUCTION ✦</p>
+      <h1 class="hero__title">
+        H<span class="accent-1">Y</span><span class="accent-2">P</span><span class="accent-1">N</span>A<span class="accent-3">G</span><span class="accent-2">O</span>G<span class="accent-1">I</span><span class="accent-3">A</span>
+      </h1>
+    </div>
+    <a href="#beats" class="hero__scroll-hint" id="hero-scroll-btn">
+      <span class="hero__scroll-text">beats catalog below</span>
+      <div class="hero__scroll-line"></div>
+    </a>
+  </section>
+
+
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- BEAT CATALOG                                -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section id="beats" class="section beats-section">
+    <div class="container">
+      <div class="beats-header">
+        <div>
+          <h2 class="section__label">Catalog</h2>
+          <p class="section__heading">INSTRUMENTALS by HYPNAGOGIA</p>
+        </div>
+        <div class="beats-search" id="beats-search">
+          <input type="text" id="beat-search-input" class="beats-search__input" placeholder="Search beats..."
+            autocomplete="off">
+          <button id="beat-search-toggle" class="beats-search__btn" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div id="beat-catalog" class="beat-catalog">
+        <div class="beat-catalog__loading">
+          <div class="spinner"></div>
+          <span>Loading catalog...</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PURCHASE MODAL                              -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="purchase-modal" class="modal" aria-hidden="true">
+    <div class="modal__overlay" data-close-modal></div>
+    <div class="modal__panel">
+      <button class="modal__close" data-close-modal aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+
+      <div class="modal__body">
+        <h2 class="modal__title">Purchase License</h2>
+
+        <!-- Selected beat preview -->
+        <div id="modal-beat-preview" class="modal__beat-preview">
+          <span class="modal__beat-preview-empty">Select a beat from the catalog</span>
+        </div>
+
+        <form id="purchase-form" class="purchase-form">
+          <input type="hidden" id="form-beat-id" name="beatId">
+
+          <div class="form-field">
+            <label for="form-name">Full Name <span class="form-field__req">*</span></label>
+            <input type="text" id="form-name" name="name" required autocomplete="name">
+          </div>
+
+          <div class="form-field">
+            <label for="form-email">Email <span class="form-field__req">*</span></label>
+            <input type="email" id="form-email" name="email" required autocomplete="email">
+          </div>
+
+          <div class="form-field">
+            <label>License Type <span class="form-field__req">*</span></label>
+            <div class="modal-license-grid">
+              <label class="modal-license-card">
+                <input type="radio" name="licenseType" value="lease_basic" required>
+                <div class="modal-license-card__content">
+                  <div class="mlc-header">
+                    <span class="mlc-badge">BASIC</span>
+                    <span class="mlc-price">49 PLN</span>
+                  </div>
+                  <ul class="mlc-features">
+                    <li>MP3 + WAV</li>
+                    <li>50k streams</li>
+                    <li>1 music video</li>
+                  </ul>
+                </div>
+              </label>
+
+              <label class="modal-license-card">
+                <input type="radio" name="licenseType" value="lease_premium" checked required>
+                <div class="modal-license-card__content">
+                  <div class="mlc-header">
+                    <span class="mlc-badge">PREMIUM</span>
+                    <span class="mlc-price">179 PLN</span>
+                  </div>
+                  <ul class="mlc-features">
+                    <li>MP3 + WAV + Stems</li>
+                    <li>500k streams</li>
+                    <li>Radio broadcasting</li>
+                  </ul>
+                </div>
+              </label>
+
+              <label class="modal-license-card">
+                <input type="radio" name="licenseType" value="exclusive" required>
+                <div class="modal-license-card__content">
+                  <div class="mlc-header">
+                    <span class="mlc-badge">EXCLUSIVE</span>
+                    <span class="mlc-price">888 PLN</span>
+                  </div>
+                  <ul class="mlc-features">
+                    <li>Unlimited everything</li>
+                    <li>Beat exclusivity</li>
+                  </ul>
+                </div>
+              </label>
+            </div>
+            <p class="licensing__note" style="margin-top: 12px; font-size: 0.75rem;">All licenses require credit:
+              <strong>prod. HYPNAGOGIA</strong></p>
+          </div>
+
+          <div class="form-field">
+            <label for="form-artist-link">Artist Profile Link <span class="form-field__opt">(optional)</span></label>
+            <input type="url" id="form-artist-link" name="artistLink" placeholder="https://open.spotify.com/artist/...">
+          </div>
+
+          <div class="form-field">
+            <label for="form-promo">Promo Code</label>
+            <div class="promo-row">
+              <input type="text" id="form-promo" name="promoCode" placeholder="PROMO CODE">
+              <button type="button" id="promo-validate-btn" class="promo-row__btn">Apply</button>
+            </div>
+            <div id="promo-feedback" class="promo-feedback"></div>
+          </div>
+
+          <!-- Price summary -->
+          <div class="price-summary" id="price-summary">
+            <div class="price-summary__row">
+              <span>Price</span>
+              <span id="price-original">179 PLN</span>
+            </div>
+            <div class="price-summary__row price-summary__row--discount" id="price-discount-row" style="display:none">
+              <span>Discount</span>
+              <span id="price-discount">-0 PLN</span>
+            </div>
+            <div class="price-summary__row price-summary__row--total">
+              <span>Total</span>
+              <span id="price-total">179 PLN</span>
+            </div>
+          </div>
+
+          <button type="submit" class="purchase-form__submit" id="purchase-submit">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+              <line x1="1" y1="10" x2="23" y2="10" />
+            </svg>
+            <span>Proceed to Payment</span>
+          </button>
+
+          <p class="purchase-form__disclaimer">
+            Secure payment via <strong>Stripe</strong>. Cards, BLIK, Przelewy24 accepted.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- LEGAL MODAL                                 -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div id="legal-modal" class="modal" aria-hidden="true">
+    <div class="modal__overlay" data-close-legal></div>
+    <div class="modal__panel modal__panel--legal">
+      <button class="modal__close" data-close-legal aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="modal__body" id="legal-content"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- FOOTER                                      -->
+  <!-- ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">HYPNAGOGIA</span>
+        <span class="footer__sub">by prod. HYPNAGOGIA</span>
+      </div>
+      <div class="footer__links">
+        <a href="https://www.instagram.com/state.of.hypnagogia" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+          </svg>
+        </a>
+        <a href="https://www.youtube.com/@hypnagogic-state-of-mind" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+          </svg>
+        </a>
+      </div>
+      <div class="footer__legal">
+        <button class="footer__legal-btn" data-legal="terms">Terms of Service</button>
+        <span class="footer__dot">·</span>
+        <button class="footer__legal-btn" data-legal="privacy">Privacy Policy</button>
+      </div>
+      <p class="footer__copy">© <span id="year"></span> HYPNAGOGIA. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Hidden YT player -->
+  <div id="yt-embed-player" style="width:1px;height:1px;position:fixed;left:-9999px;top:-9999px;overflow:hidden;"></div>
+</body>
+
+</html>
