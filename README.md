@@ -10,7 +10,7 @@ The project operates on a single-tier Node.js/Express architecture serving a hig
 
 - **Express Gateway (`server.js`)**: The root application server. Manages global rate-limiting (via `express-rate-limit`), security headers (`helmet`), static asset delivery (`public/`), and API routing.
 - **Dynamic Content Engine**: Periodically fetches and caches the production catalog from the YouTube v3 API via a scheduled cron job (running every 15 minutes), ensuring real-time sync with content uploads without front-end loading penalties.
-- **Payment & Delivery Pipeline**: Secure, webhook-driven checkout flow using Stripe. Upon successful payment verification, the system triggers `PDFKit` for dynamic legal license generation and `Mailgun` for automated asset and document delivery.
+- **Payment & Delivery Pipeline**: Secure, webhook-driven checkout flow using Stripe. Upon successful payment verification, the system triggers `PDFKit` for dynamic legal license generation and `Resend` for automated asset and document delivery.
 - **Client Interface (`public/`)**: A zero-dependency Vanilla JS/CSS Single Page Application (SPA). Features a custom DOM-optimized audio scrubbing UI that interfaces directly with the YouTube iframe API, preventing heavy re-renders during progress state changes.
 
 ## Tech Stack
@@ -19,7 +19,7 @@ The project operates on a single-tier Node.js/Express architecture serving a hig
 - **Framework**: Express.js
 - **Security & Validation**: Helmet, Joi, Express-Rate-Limit
 - **Billing & Payments**: Stripe API
-- **Communications**: Mailgun API
+- **Communications**: Resend API
 - **Document Generation**: PDFKit
 - **Deployment**: Docker & Docker Compose
 
@@ -47,4 +47,4 @@ docker-compose up -d --build
 ```
 
 ### Environment Configuration
-The system requires a `.env` file containing secrets for Stripe, Mailgun, YouTube API, and contact endpoints. This ensures secure token separation from the codebase.
+The system requires a `.env` file containing secrets for Stripe, Resend, YouTube API, and contact endpoints. This ensures secure token separation from the codebase.
